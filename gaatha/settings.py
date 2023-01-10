@@ -9,7 +9,7 @@ https://docs.djangoproject.com/en/4.1/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.1/ref/settings/
 """
-
+import os
 from pathlib import Path
 import environ
 
@@ -56,6 +56,7 @@ INSTALLED_APPS = [
 
     # thirdparty apps
     'strawberry.django',
+    'tinymce',
 ]
 
 MIDDLEWARE = [
@@ -135,11 +136,40 @@ USE_TZ = True
 
 
 # Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/4.1/howto/static-files/
+# https://docs.djangoproject.com/en/3.0/howto/static-files/
 
-STATIC_URL = 'static/'
+STATICFILES_DIRS = [os.path.join(BASE_DIR, "static")]
+STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
+MEDIA_ROOT = os.path.join(BASE_DIR, "media")
+
+if DEBUG:
+    # Settings for local storage and local staticfiles
+    STATIC_URL = "/staticfiles/"
+    MEDIA_URL = "/media/"
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+TINYMCE_DEFAULT_CONFIG = {
+    "height": "320px",
+    "width": "960px",
+    "menubar": "file edit view insert format tools table help",
+    "plugins": (
+        "advlist autolink lists link image charmap print preview anchor "
+        "searchreplace visualblocks code fullscreen insertdatetime media "
+        "table paste code help wordcount spellchecker"
+    ),
+    "toolbar": (
+        "undo redo | bold italic underline strikethrough | fontselect "
+        "fontsizeselect formatselect | alignleft aligncenter alignright "
+        "alignjustify | outdent indent |  numlist bullist checklist | "
+        "forecolor backcolor casechange permanentpen formatpainter "
+        "removeformat | pagebreak | charmap emoticons | "
+        "fullscreen  preview save print | "
+        "insertfile image media pageembed template link anchor codesample | "
+        "a11ycheck ltr rtl | showcomments addcomment code"
+    ),
+    "custom_undo_redo_levels": 10,
+}

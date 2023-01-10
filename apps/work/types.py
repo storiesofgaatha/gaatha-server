@@ -1,10 +1,12 @@
 import strawberry
 from typing import List, Optional
 from strawberry import auto
+from strawberry.types import Info
+
+from utils import build_url
 from .models import Work, WorkImage
 from gaatha.types import FileFieldType
-from strawberry.types import Info
-from utils import build_url
+from .filters import WorkFilter
 
 
 @strawberry.django.type(WorkImage)
@@ -43,6 +45,6 @@ class WorkType:
         return await info.context["work_image_loader"].load(self.id)
 
 
-@strawberry.django.type(Work, pagination=True)
+@strawberry.django.type(Work, pagination=True, filters=WorkFilter)
 class WorkListType(WorkType):
     pass

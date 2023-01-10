@@ -13,10 +13,6 @@ class Work(models.Model):
         TAG1 = 'tag_1', _('Tag 1')
         TAG2 = 'tag_2', _('Tag 2')
 
-    class Status(models.TextChoices):
-        STATUS1 = 'status_1', _('Status 1')
-        STATUS2 = 'status_2', _('Status 2')
-
     title = models.CharField(max_length=255)
     description = models.TextField(
         blank=True,
@@ -103,4 +99,3 @@ class WorkImage(models.Model):
 
 #     def __str__(self):
 #         return str(self.name)
-

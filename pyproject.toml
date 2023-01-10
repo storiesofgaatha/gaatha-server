@@ -13,6 +13,7 @@ strawberry-graphql = "0.151.2"
 pillow = "^9.4.0"
 strawberry-graphql-django = "0.8.2"
 starlette = "^0.23.1"
+django-tinymce = "^3.5.0"
 
 [tool.poetry.dev-dependencies]
 

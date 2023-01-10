@@ -24,6 +24,7 @@ db.sqlite3
 *.swp
 
 # local development files
+staticfiles/
 static
 URLs*
 db.sqlite3-journal
