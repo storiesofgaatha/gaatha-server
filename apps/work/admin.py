@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from .models import Work, WorkImage
+from .models import Work, WorkImage, People
 from .forms import WorkForm
 
 
@@ -20,4 +20,14 @@ class WorkAdmin(admin.ModelAdmin):
 
     inlines = [
         WorkImageInline,
+    ]
+
+
+@admin.register(People)
+class PeopleAdmin(admin.ModelAdmin):
+    list_display = [
+        'name',
+        'designation',
+        'email',
+        'is_current_employee',
     ]

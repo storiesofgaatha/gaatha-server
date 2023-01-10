@@ -4,7 +4,7 @@ from strawberry import auto
 from strawberry.types import Info
 
 from utils import build_url
-from .models import Work, WorkImage
+from .models import Work, WorkImage, People
 from gaatha.types import FileFieldType
 from .filters import WorkFilter
 from gaatha.enums import GenericEnumValue
@@ -49,6 +49,23 @@ class WorkType:
 @strawberry.django.type(Work, pagination=True, filters=WorkFilter)
 class WorkListType(WorkType):
     pass
+
+
+@strawberry.django.type(People)
+class PeopleType:
+    id: auto
+    name: auto
+    email: auto
+    designation: auto
+    qualification: auto
+    is_current_employee: auto
+    linked_in_url: auto
+    instagram_url: auto
+
+    @strawberry.field
+    async def profile_picture(self, info: Info) -> Optional[FileFieldType]:
+        result = await info.context["people_profile_picture_loader"].load(self.id)
+        return build_url(result, info.context['request'])
 
 
 @strawberry.type

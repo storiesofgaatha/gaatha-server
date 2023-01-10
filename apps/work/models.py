@@ -6,12 +6,17 @@ from django.db import models
 # Create your models here.
 class Work(models.Model):
     class Category(models.TextChoices):
-        CATEGORY1 = 'category_1', _('Category 1')
-        CATEGORY2 = 'category_2', _('Category 2')
+        RESIDENTAL = 'residental', _('Residental')
+        CIVIC = 'civic', _('Civic')
+        LANDSCAPE = 'landscape', _('Landscape')
+        RESEARCH = 'research', _('Research')
 
     class Tag(models.TextChoices):
-        TAG1 = 'tag_1', _('Tag 1')
-        TAG2 = 'tag_2', _('Tag 2')
+        ARCHITECTURE = 'architecture', _('Architecture')
+        INTERIOR = 'interior', _('Interior')
+        GRAPHICS = 'graphics', _('Graphics')
+        VISUALIZATION = 'visualization', _('Visualization')
+        EXIBITION = 'exibition', _('Exibition')
 
     title = models.CharField(max_length=255)
     description = models.TextField(
@@ -64,38 +69,38 @@ class WorkImage(models.Model):
         return str(self.work.id)
 
 
-# class People(models.Model):
-#     name = models.CharField(max_length=250, verbose_name=_('Name'))
-#     profile_picture = models.ImageField(
-#         null=True,
-#         blank=True,
-#         upload_to="profile_pictures",
-#         verbose_name=_("Profile Picture")
-#     )
-#     art_work = models.FileField(
-#         null=True,
-#         blank=True,
-#         upload_to="art_works",
-#         verbose_name=_("Art Work")
-#     )
-#     email = models.CharField(max_length=250, verbose_name=_('Email'))
-#     designation = models.CharField(
-#         max_length=100, blank=True, verbose_name=_("Designation")
-#     )
-#     qualification = models.CharField(
-#         max_length=250, blank=True, verbose_name=_("Qualification")
-#     )
-#     is_current_employee = models.BooleanField(default=True)
-#     linked_in_url = models.CharField(
-#         max_length=500, verbose_name=_("LinkedIn"), blank=True
-#     )
-#     instagram_url = models.CharField(
-#         max_length=500, verbose_name=_('Instagram'), blank=True
-#     )
+class People(models.Model):
+    name = models.CharField(max_length=250, verbose_name=_('Name'))
+    profile_picture = models.ImageField(
+        null=True,
+        blank=True,
+        upload_to="profile_pictures",
+        verbose_name=_("Profile Picture")
+    )
+    art_work = models.FileField(
+        null=True,
+        blank=True,
+        upload_to="art_works",
+        verbose_name=_("Art Work")
+    )
+    email = models.EmailField(max_length=250, verbose_name=_('Email'))
+    designation = models.CharField(
+        max_length=100, blank=True, verbose_name=_("Designation")
+    )
+    qualification = models.CharField(
+        max_length=250, blank=True, verbose_name=_("Qualification")
+    )
+    is_current_employee = models.BooleanField(default=True)
+    linked_in_url = models.CharField(
+        max_length=500, verbose_name=_("LinkedIn"), blank=True
+    )
+    instagram_url = models.CharField(
+        max_length=500, verbose_name=_('Instagram'), blank=True
+    )
 
-#     class Meta:
-#         verbose_name = _("People")
-#         verbose_name_plural = _("People")
+    class Meta:
+        verbose_name = _("People")
+        verbose_name_plural = _("People")
 
-#     def __str__(self):
-#         return str(self.name)
+    def __str__(self):
+        return str(self.name)

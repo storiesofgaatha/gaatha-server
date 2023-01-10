@@ -2,7 +2,7 @@
 import strawberry
 from typing import List
 from asgiref.sync import sync_to_async
-from apps.work.types import WorkType, WorkListType
+from apps.work.types import WorkType, WorkListType, PeopleType
 from apps.work.models import Work
 from gaatha.enums import GenericEnumValue
 from apps.work.types import WorkFilterChoiceType
@@ -30,6 +30,7 @@ def get_work_filter_options() -> WorkFilterChoiceType:
 class Query():
     works: List[WorkListType] = strawberry.django.field()
     work: WorkType = strawberry.django.field()
+    people: List[PeopleType] = strawberry.django.field()
 
     @strawberry.field
     async def work_filter_choices(self) -> WorkFilterChoiceType:
