@@ -7,6 +7,7 @@ from utils import build_url
 from .models import Work, WorkImage
 from gaatha.types import FileFieldType
 from .filters import WorkFilter
+from gaatha.enums import GenericEnumValue
 
 
 @strawberry.django.type(WorkImage)
@@ -48,3 +49,9 @@ class WorkType:
 @strawberry.django.type(Work, pagination=True, filters=WorkFilter)
 class WorkListType(WorkType):
     pass
+
+
+@strawberry.type
+class WorkFilterChoiceType:
+    category: Optional[List[GenericEnumValue[Work.Category]]]
+    tag: Optional[List[GenericEnumValue[Work.Tag]]]

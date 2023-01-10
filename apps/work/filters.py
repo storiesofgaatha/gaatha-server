@@ -1,5 +1,5 @@
 import strawberry
-from typing import Optional, List
+from typing import List
 
 from .models import Work
 from .enums import CategoryEnum, TagEnum
@@ -7,7 +7,6 @@ from .enums import CategoryEnum, TagEnum
 
 @strawberry.django.filters.filter(Work)
 class WorkFilter:
-    status: Optional[str]
     category: List[CategoryEnum] | None
     tag: List[TagEnum] | None
 
