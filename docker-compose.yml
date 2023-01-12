@@ -1,3 +1,5 @@
+version: '3.8'
+
 services:
   db:
     image: postgres:15
@@ -17,14 +19,14 @@ services:
     tty: true
     environment:
       DEBUG: ${DEBUG:-True}
-      SECRET_KEY: ${SECRET_KEY:-django-insecure-xxxxxxxx-do-not-use-in-production}
+      DJANGO_SECRET_KEY: ${DJANGO_SECRET_KEY:-?}
       DB_NAME: ${DB_NAME:-postgres}
       DB_USER: ${DB_USER:-postgres}
       DB_PWD: ${DB_PWD:-postgres}
-      DB_HOST: db
-      DB_PORT: 5432
-    env_file:
-      - .env
+      DB_HOST: ${DB_HOST:-db}
+      DB_PORT: ${DB_PORT:-5432}
+      LANGUAGE_CODE: ${LANGUAGE_CODE:-en-us}
+      TIME_ZONE: ${TIME_ZONE:-Asia/Kathmandu}
     command: bash -c "/code/scripts/run_develop.sh"
     volumes:
       - ./:/code

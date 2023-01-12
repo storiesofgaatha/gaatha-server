@@ -2,7 +2,7 @@
 name = "gaatha"
 version = "0.1.0"
 description = ""
-authors = ["rup <rup.rajbanshi@togglecorp.com>"]
+authors = ["TC-DEV <dev@togglecorp.com>"]
 
 [tool.poetry.dependencies]
 python = "^3.11"

@@ -1,5 +1,5 @@
 import strawberry
-from typing import TypeVar, Generic, List
+from typing import TypeVar, Generic
 
 GenericEnumVar = TypeVar('GenericEnumVar')
 
@@ -10,7 +10,7 @@ class GenericEnumValue(Generic[GenericEnumVar]):
     label: str
 
 
-def generate_enum_name_and_label(enum_class) -> List[GenericEnumValue]:
+def generate_enum_name_and_label(enum_class) -> list[GenericEnumValue]:
     """
     Return list of generic enum value
     """

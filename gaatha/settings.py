@@ -18,14 +18,16 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 
 env = environ.Env(
-    DEBUG=(bool, True),
-    SECRET_KEY=(str, 'django-insecure-pm5c((7v2kh7btd(o%2exi4+6_ui1pso-6naxq-6zuaxs7sq+%'),
+    DEBUG=(bool, False),
+    DJANGO_SECRET_KEY=str,
     ALLOWED_HOSTS=(list, ['*']),
-    DB_NAME=(str, 'postgres'),
-    DB_USER=(str, 'postgres'),
-    DB_PWD=(str, 'postgres'),
-    DB_HOST=(str, 'db'),
-    DB_PORT=(str, 5432),
+    DB_NAME=str,
+    DB_USER=str,
+    DB_PWD=str,
+    DB_HOST=str,
+    DB_PORT=str,
+    LANGUAGE_CODE=str,
+    TIME_ZONE=str,
 )
 
 
@@ -33,7 +35,7 @@ env = environ.Env(
 # See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = env('SECRET_KEY')
+SECRET_KEY = env('DJANGO_SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = env('DEBUG')
@@ -53,6 +55,7 @@ INSTALLED_APPS = [
 
     # local apps
     'apps.work',
+    'apps.people',
 
     # thirdparty apps
     'strawberry.django',
@@ -126,9 +129,9 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/4.1/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = env('LANGUAGE_CODE')
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = env('TIME_ZONE')
 
 USE_I18N = True
 
@@ -142,10 +145,10 @@ STATICFILES_DIRS = [os.path.join(BASE_DIR, "static")]
 STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
 MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 
-if DEBUG:
-    # Settings for local storage and local staticfiles
-    STATIC_URL = "/staticfiles/"
-    MEDIA_URL = "/media/"
+
+# Settings for local storage and local staticfiles
+STATIC_URL = "/staticfiles/"
+MEDIA_URL = "/media/"
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field

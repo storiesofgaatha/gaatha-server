@@ -1,13 +1,23 @@
 import strawberry
-from typing import List, Optional
 from strawberry import auto
 from strawberry.types import Info
 
 from utils import build_url
-from .models import Work, WorkImage, People
+from .models import Work, WorkImage, WorkTag, WorkCategory
 from gaatha.types import FileFieldType
 from .filters import WorkFilter
-from gaatha.enums import GenericEnumValue
+
+
+@strawberry.django.type(WorkTag)
+class WorkTagType:
+    id: auto
+    name: auto
+
+
+@strawberry.django.type(WorkCategory)
+class WorkCategoryType:
+    id: auto
+    name: auto
 
 
 @strawberry.django.type(WorkImage)
@@ -15,7 +25,7 @@ class WorkImageType:
     id: auto
 
     @strawberry.field
-    async def image(self, info: Info) -> Optional[FileFieldType]:
+    async def image(self, info: Info) -> FileFieldType | None:
         return build_url(self.image, info.context['request'])
 
 
@@ -25,24 +35,22 @@ class WorkType:
     title: auto
     description: auto
     area: auto
-    category: auto
     status: auto
-    tag: auto
     duration: auto
     location: auto
+    category: WorkCategoryType
+    tag: WorkTagType
 
     @strawberry.field
-    async def art_work(self, info: Info) -> Optional[FileFieldType]:
-        result = await info.context["work_art_work_loader"].load(self.id)
-        return build_url(result, info.context['request'])
+    async def art_work(self, info: Info) -> FileFieldType | None:
+        return build_url(self.art_work, info.context['request'])
 
     @strawberry.field
-    async def cover_image(self, info: Info) -> Optional[FileFieldType]:
-        result = await info.context["work_cover_image_loader"].load(self.id)
-        return build_url(result, info.context['request'])
+    async def cover_image(self, info: Info) -> FileFieldType | None:
+        return build_url(self.cover_image, info.context['request'])
 
     @strawberry.field
-    async def images(self, info: Info) -> List[WorkImageType]:
+    async def images(self, info: Info) -> list[WorkImageType]:
         return await info.context["work_image_loader"].load(self.id)
 
 
@@ -51,24 +59,7 @@ class WorkListType(WorkType):
     pass
 
 
-@strawberry.django.type(People)
-class PeopleType:
-    id: auto
-    name: auto
-    email: auto
-    designation: auto
-    qualification: auto
-    is_current_employee: auto
-    linked_in_url: auto
-    instagram_url: auto
-
-    @strawberry.field
-    async def profile_picture(self, info: Info) -> Optional[FileFieldType]:
-        result = await info.context["people_profile_picture_loader"].load(self.id)
-        return build_url(result, info.context['request'])
-
-
 @strawberry.type
-class WorkFilterChoiceType:
-    category: Optional[List[GenericEnumValue[Work.Category]]]
-    tag: Optional[List[GenericEnumValue[Work.Tag]]]
+class FilterChoiceType:
+    work_category: list[WorkCategoryType] | None
+    work_tag: list[WorkTagType] | None

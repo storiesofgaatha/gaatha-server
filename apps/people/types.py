@@ -1,0 +1,28 @@
+import strawberry
+from strawberry import auto
+from strawberry.types import Info
+
+from utils import build_url
+from .models import People
+from gaatha.types import FileFieldType
+
+
+@strawberry.django.type(People)
+class PeopleType:
+    id: auto
+    name: auto
+    email: auto
+    designation: auto
+    qualification: auto
+    is_current_employee: auto
+    linkedin_url: auto
+    instagram_url: auto
+
+    @strawberry.field
+    async def profile_picture(self, info: Info) -> FileFieldType | None:
+        return build_url(self.profile_picture, info.context['request'])
+
+
+@strawberry.django.type(People, pagination=True)
+class PeopleListType(PeopleType):
+    pass

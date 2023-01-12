@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from .models import Work, WorkImage, People
+from .models import Work, WorkImage, WorkCategory, WorkTag
 from .forms import WorkForm
 
 
@@ -15,6 +15,8 @@ class WorkAdmin(admin.ModelAdmin):
     list_display = [
         'title',
         'status',
+        'category',
+        'status',
         'duration',
     ]
 
@@ -23,11 +25,15 @@ class WorkAdmin(admin.ModelAdmin):
     ]
 
 
-@admin.register(People)
-class PeopleAdmin(admin.ModelAdmin):
+@admin.register(WorkCategory)
+class CategoryAdmin(admin.ModelAdmin):
     list_display = [
-        'name',
-        'designation',
-        'email',
-        'is_current_employee',
+        'name'
+    ]
+
+
+@admin.register(WorkTag)
+class TagAdmin(admin.ModelAdmin):
+    list_display = [
+        'name'
     ]

@@ -3,40 +3,57 @@ from django.utils.translation import gettext_lazy as _
 from django.db import models
 
 
-# Create your models here.
+class WorkCategory(models.Model):
+    name = models.CharField(max_length=100, verbose_name=_('Name'))
+
+    class Meta:
+        verbose_name = "Category"
+        verbose_name_plural = "Categories"
+
+    def __str__(self):
+        return self.name
+
+
+class WorkTag(models.Model):
+    name = models.CharField(max_length=100, verbose_name=_('Name'))
+
+    class Meta:
+        verbose_name = "Tag"
+        verbose_name_plural = "Tags"
+
+    def __str__(self):
+        return self.name
+
+
 class Work(models.Model):
-    class Category(models.TextChoices):
-        RESIDENTAL = 'residental', _('Residental')
-        CIVIC = 'civic', _('Civic')
-        LANDSCAPE = 'landscape', _('Landscape')
-        RESEARCH = 'research', _('Research')
-
-    class Tag(models.TextChoices):
-        ARCHITECTURE = 'architecture', _('Architecture')
-        INTERIOR = 'interior', _('Interior')
-        GRAPHICS = 'graphics', _('Graphics')
-        VISUALIZATION = 'visualization', _('Visualization')
-        EXIBITION = 'exibition', _('Exibition')
-
     title = models.CharField(max_length=255)
     description = models.TextField(
         blank=True,
         verbose_name=_('Description')
     )
-    art_work = models.FileField(null=True, blank=True, upload_to="art_works")
+    art_work = models.FileField(null=True, blank=True, upload_to="work/art-works")
     cover_image = models.ImageField(
         null=True,
         blank=True,
-        upload_to="cover_images",
+        upload_to="work/cover-images",
         verbose_name=_('Cover image')
     )
     area = models.CharField(max_length=50, blank=True)
-    category = models.CharField(
-        max_length=50, verbose_name=_('Category'), choices=Category.choices
+    category = models.ForeignKey(
+        WorkCategory,
+        verbose_name=_('Category'),
+        on_delete=models.SET_NULL,
+        blank=True,
+        null=True,
+        related_name='work_category'
     )
     status = models.CharField(max_length=250, verbose_name=_('Status'))
-    tag = models.CharField(
-        max_length=50, verbose_name=_('Tag'), choices=Tag.choices
+    tag = models.ForeignKey(
+        WorkTag,
+        verbose_name=_('Tag'),
+        on_delete=models.SET_NULL,
+        blank=True,
+        null=True,
     )
     duration = models.CharField(max_length=100, blank=True)
     location = models.CharField(max_length=500, blank=True)
@@ -54,53 +71,12 @@ class WorkImage(models.Model):
         Work,
         on_delete=models.CASCADE,
         related_name='workimage_work',
-        verbose_name=_('Work'),
-        null=True,
-        blank=True,
+        verbose_name=_('Work')
     )
     image = models.ImageField(
-        null=True,
-        blank=True,
-        upload_to="workimage_image",
+        upload_to="work-image/images/",
         verbose_name=_('Image')
     )
 
     def __str__(self):
-        return str(self.work.id)
-
-
-class People(models.Model):
-    name = models.CharField(max_length=250, verbose_name=_('Name'))
-    profile_picture = models.ImageField(
-        null=True,
-        blank=True,
-        upload_to="profile_pictures",
-        verbose_name=_("Profile Picture")
-    )
-    art_work = models.FileField(
-        null=True,
-        blank=True,
-        upload_to="art_works",
-        verbose_name=_("Art Work")
-    )
-    email = models.EmailField(max_length=250, verbose_name=_('Email'))
-    designation = models.CharField(
-        max_length=100, blank=True, verbose_name=_("Designation")
-    )
-    qualification = models.CharField(
-        max_length=250, blank=True, verbose_name=_("Qualification")
-    )
-    is_current_employee = models.BooleanField(default=True)
-    linked_in_url = models.CharField(
-        max_length=500, verbose_name=_("LinkedIn"), blank=True
-    )
-    instagram_url = models.CharField(
-        max_length=500, verbose_name=_('Instagram'), blank=True
-    )
-
-    class Meta:
-        verbose_name = _("People")
-        verbose_name_plural = _("People")
-
-    def __str__(self):
-        return str(self.name)
+        return str(self.work.title)
