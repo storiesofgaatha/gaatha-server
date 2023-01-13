@@ -6,12 +6,12 @@ class People(models.Model):
     name = models.CharField(max_length=250, verbose_name=_('Name'))
     profile_picture = models.ImageField(
         blank=True,
-        upload_to="profile_pictures",
+        upload_to="people/profile-pictures",
         verbose_name=_("Profile Picture")
     )
     art_work = models.FileField(
         blank=True,
-        upload_to="art_works",
+        upload_to="people/art-works",
         verbose_name=_("Art Work")
     )
     email = models.EmailField(max_length=250, blank=True, verbose_name=_('Email'))

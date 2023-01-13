@@ -19,7 +19,7 @@ services:
     tty: true
     environment:
       DEBUG: ${DEBUG:-True}
-      DJANGO_SECRET_KEY: ${DJANGO_SECRET_KEY:-?}
+      DJANGO_SECRET_KEY: ${DJANGO_SECRET_KEY:?err}
       DB_NAME: ${DB_NAME:-postgres}
       DB_USER: ${DB_USER:-postgres}
       DB_PWD: ${DB_PWD:-postgres}
@@ -31,7 +31,7 @@ services:
     volumes:
       - ./:/code
     ports:
-      - '8000:8000'
+      - '8020:8020'
     depends_on:
       - db
 

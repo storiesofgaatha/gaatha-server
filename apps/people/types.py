@@ -22,6 +22,10 @@ class PeopleType:
     async def profile_picture(self, info: Info) -> FileFieldType | None:
         return build_url(self.profile_picture, info.context['request'])
 
+    @strawberry.field
+    async def art_work(self, info: Info) -> FileFieldType | None:
+        return build_url(self.art_work, info.context['request'])
+
 
 @strawberry.django.type(People, pagination=True)
 class PeopleListType(PeopleType):
