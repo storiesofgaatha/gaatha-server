@@ -1,0 +1,84 @@
+type FileFieldType {
+  name: String!
+  url: String!
+}
+
+type FilterChoiceType {
+  workCategory: [WorkCategoryType!]
+  workTag: [WorkTagType!]
+}
+
+input OffsetPaginationInput {
+  offset: Int! = 0
+  limit: Int! = -1
+}
+
+type PeopleListType {
+  id: ID!
+  name: String!
+  email: String!
+  designation: String!
+  qualification: String!
+  isCurrentEmployee: Boolean!
+  linkedinUrl: String!
+  instagramUrl: String!
+  artWork: FileFieldType
+  profilePicture: FileFieldType
+}
+
+type Query {
+  works(filters: WorkFilter, pagination: OffsetPaginationInput): [WorkListType!]!
+  work(pk: ID!): WorkType!
+  people(pagination: OffsetPaginationInput): [PeopleListType!]!
+  filterChoices: FilterChoiceType!
+}
+
+type WorkCategoryType {
+  id: ID!
+  name: String!
+}
+
+input WorkFilter {
+  category: ID
+  tag: ID
+}
+
+type WorkImageType {
+  id: ID!
+  image: FileFieldType
+}
+
+type WorkListType {
+  id: ID!
+  title: String!
+  description: String!
+  area: String!
+  status: String!
+  duration: String!
+  location: String!
+  category: WorkCategoryType
+  tag: WorkTagType
+  artWork: FileFieldType
+  coverImage: FileFieldType
+  images: [WorkImageType!]!
+}
+
+type WorkTagType {
+  id: ID!
+  name: String!
+}
+
+type WorkType {
+  id: ID!
+  title: String!
+  description: String!
+  area: String!
+  status: String!
+  duration: String!
+  location: String!
+  category: WorkCategoryType
+  tag: WorkTagType
+  artWork: FileFieldType
+  coverImage: FileFieldType
+  images: [WorkImageType!]!
+}
