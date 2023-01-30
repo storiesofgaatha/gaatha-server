@@ -1,0 +1,82 @@
+
+from django.utils.translation import gettext_lazy as _
+from django.db import models
+
+
+class WorkCategory(models.Model):
+    name = models.CharField(max_length=100, verbose_name=_('Name'))
+
+    class Meta:
+        verbose_name = "Category"
+        verbose_name_plural = "Categories"
+
+    def __str__(self):
+        return self.name
+
+
+class WorkTag(models.Model):
+    name = models.CharField(max_length=100, verbose_name=_('Name'))
+
+    class Meta:
+        verbose_name = "Tag"
+        verbose_name_plural = "Tags"
+
+    def __str__(self):
+        return self.name
+
+
+class Work(models.Model):
+    title = models.CharField(max_length=255)
+    description = models.TextField(
+        blank=True,
+        verbose_name=_('Description')
+    )
+    art_work = models.FileField(null=True, blank=True, upload_to="work/art-works")
+    cover_image = models.ImageField(
+        null=True,
+        blank=True,
+        upload_to="work/cover-images",
+        verbose_name=_('Cover image')
+    )
+    area = models.CharField(max_length=50, blank=True)
+    category = models.ForeignKey(
+        WorkCategory,
+        verbose_name=_('Category'),
+        on_delete=models.SET_NULL,
+        blank=True,
+        null=True,
+        related_name='work_category'
+    )
+    status = models.CharField(max_length=250, verbose_name=_('Status'))
+    tag = models.ForeignKey(
+        WorkTag,
+        verbose_name=_('Tag'),
+        on_delete=models.SET_NULL,
+        blank=True,
+        null=True,
+    )
+    duration = models.CharField(max_length=100, blank=True)
+    location = models.CharField(max_length=500, blank=True)
+
+    class Meta:
+        verbose_name = "Work"
+        verbose_name_plural = "Works"
+
+    def __str__(self):
+        return str(self.id)
+
+
+class WorkImage(models.Model):
+    work = models.ForeignKey(
+        Work,
+        on_delete=models.CASCADE,
+        related_name='workimage_work',
+        verbose_name=_('Work')
+    )
+    image = models.ImageField(
+        upload_to="work-image/images/",
+        verbose_name=_('Image')
+    )
+
+    def __str__(self):
+        return str(self.work.title)
