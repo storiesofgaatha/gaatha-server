@@ -26,10 +26,18 @@ type PeopleListType {
   profilePicture: FileFieldType
 }
 
+type ProjectListType {
+  id: ID!
+  title: String!
+  location: String!
+  image: FileFieldType
+}
+
 type Query {
   works(filters: WorkFilter, pagination: OffsetPaginationInput): [WorkListType!]!
   work(pk: ID!): WorkType!
   people(pagination: OffsetPaginationInput): [PeopleListType!]!
+  projects(pagination: OffsetPaginationInput): [ProjectListType!]!
   filterChoices: FilterChoiceType!
 }
 
@@ -58,6 +66,7 @@ type WorkListType {
   location: String!
   category: WorkCategoryType
   tag: WorkTagType
+  isCoverImageDark: Boolean!
   artWork: FileFieldType
   coverImage: FileFieldType
   images: [WorkImageType!]!
@@ -78,6 +87,7 @@ type WorkType {
   location: String!
   category: WorkCategoryType
   tag: WorkTagType
+  isCoverImageDark: Boolean!
   artWork: FileFieldType
   coverImage: FileFieldType
   images: [WorkImageType!]!

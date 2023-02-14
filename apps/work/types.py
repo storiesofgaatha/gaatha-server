@@ -40,6 +40,7 @@ class WorkType:
     location: auto
     category: WorkCategoryType
     tag: WorkTagType
+    is_cover_image_dark: auto
 
     @strawberry.field
     async def art_work(self, info: Info) -> FileFieldType | None:

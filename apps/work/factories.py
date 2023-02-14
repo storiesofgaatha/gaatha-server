@@ -36,6 +36,7 @@ class WorkFactory(DjangoModelFactory):
     status = fuzzy.FuzzyText(length=50)
     duration = fuzzy.FuzzyText(length=50)
     location = fuzzy.FuzzyText(length=50)
+    is_cover_image_dark = True
 
     class Meta:
         model = Work
