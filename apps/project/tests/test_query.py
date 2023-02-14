@@ -10,12 +10,9 @@ class ProjectQueryTestCase(TestCase):
                 id
                 title
                 location
-                images {
-                    id
-                    image {
-                        name
-                        url
-                    }
+                image {
+                    name
+                    url
                 }
             }
         }
@@ -23,15 +20,15 @@ class ProjectQueryTestCase(TestCase):
 
         projects = ProjectFactory.create_batch(3)
         resp = self.query_check(project_query)
-        self.assertEqual(
-            [
-                dict(
-                    id=str(project.id),
-                    location=project.location,
-                    title=project.title
-                ) for project in projects
-            ], resp['data']['projects']
-        )
         self.assertIsNotNone([project.title] for project in projects)
         self.assertIsNotNone([project.location] for project in projects)
-        self.assertIsNotNone([image['image']] for image in resp['data']['image'])
+        self.assertIsNotNone(res['image'] for res in resp['data']['projects'])
+        self.assertEqual(len(resp['data']['projects']), 3)
+        self.assertEqual(
+            [project.title for project in projects],
+            [res['title'] for res in resp['data']['projects']]
+        )
+        self.assertEqual(
+            [project.location for project in projects],
+            [res['location'] for res in resp['data']['projects']]
+        )

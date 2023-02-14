@@ -1,6 +1,7 @@
 type FileFieldType {
-  name: String!
-  url: String!
+  name: String
+  url: String
+  exists: Boolean!
 }
 
 type FilterChoiceType {
@@ -22,8 +23,8 @@ type PeopleListType {
   isCurrentEmployee: Boolean!
   linkedinUrl: String!
   instagramUrl: String!
-  artWork: FileFieldType
-  profilePicture: FileFieldType
+  profilePicture: FileFieldType!
+  artWork: FileFieldType!
 }
 
 type ProjectListType {
@@ -53,7 +54,7 @@ input WorkFilter {
 
 type WorkImageType {
   id: ID!
-  image: FileFieldType
+  image: FileFieldType!
 }
 
 type WorkListType {

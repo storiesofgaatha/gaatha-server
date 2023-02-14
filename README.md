@@ -4,6 +4,8 @@
 
 - Clone the repository to your local machine
 
+- Create a **.env** file with the necessary environment variables. Check `?err` attributes in **docker-compose.yml** and **gaatha/settings.py**
+
 - Run Project
 `docker-compose up`
 
