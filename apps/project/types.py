@@ -1,5 +1,6 @@
 import strawberry
 from strawberry import auto
+from strawberry.types import Info
 
 from .models import Project
 from gaatha.types import FileFieldType
@@ -10,7 +11,10 @@ class ProjectType:
     id: auto
     title: auto
     location: auto
-    image: FileFieldType
+
+    @strawberry.field
+    async def image(self, info: Info) -> FileFieldType | None:
+        return FileFieldType.resolve(self.image, info)
 
 
 @strawberry.django.type(Project, pagination=True)

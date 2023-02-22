@@ -22,7 +22,10 @@ class WorkCategoryType:
 @strawberry.django.type(WorkImage)
 class WorkImageType:
     id: auto
-    image: FileFieldType
+
+    @strawberry.field
+    async def image(self, info: Info) -> FileFieldType | None:
+        return FileFieldType.resolve(self.image, info)
 
 
 @strawberry.django.type(Work)
@@ -38,8 +41,13 @@ class WorkType:
     tag: WorkTagType
     is_cover_image_dark: auto
 
-    art_work: FileFieldType
-    cover_image: FileFieldType
+    @strawberry.field
+    async def art_work(self, info: Info) -> FileFieldType | None:
+        return FileFieldType.resolve(self.art_work, info)
+
+    @strawberry.field
+    async def cover_image(self, info: Info) -> FileFieldType | None:
+        return FileFieldType.resolve(self.cover_image, info)
 
     @strawberry.field
     async def images(self, info: Info) -> list[WorkImageType]:
