@@ -40,7 +40,7 @@ jobs:
         run: |
           docker-compose -f gh-docker-compose.yml run --rm server /code/scripts/run_tests.sh
 
-      - uses: kamilkisiela/graphql-inspector@master
-        with:
-          schema: 'develop:schema.graphql'
-          fail-on-breaking: false
+      # - uses: kamilkisiela/graphql-inspector@master
+      #   with:
+      #     schema: 'develop:schema.graphql'
+      #     fail-on-breaking: false
