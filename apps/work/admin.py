@@ -18,6 +18,7 @@ class WorkAdmin(admin.ModelAdmin):
         'category',
         'status',
         'duration',
+        'order',
     ]
 
     inlines = [
