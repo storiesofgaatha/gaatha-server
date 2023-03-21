@@ -58,6 +58,7 @@ class Work(models.Model):
     )
     duration = models.CharField(max_length=100, blank=True)
     location = models.CharField(max_length=500, blank=True)
+    order = models.PositiveIntegerField(blank=True, null=True)
 
     class Meta:
         verbose_name = "Work"

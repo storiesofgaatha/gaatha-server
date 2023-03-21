@@ -13,6 +13,11 @@ input OffsetPaginationInput {
   limit: Int! = -1
 }
 
+enum Ordering {
+  ASC
+  DESC
+}
+
 type PeopleListType {
   id: ID!
   name: String!
@@ -34,7 +39,7 @@ type ProjectListType {
 }
 
 type Query {
-  works(filters: WorkFilter, pagination: OffsetPaginationInput): [WorkListType!]!
+  works(filters: WorkFilter, order: WorkOrderType, pagination: OffsetPaginationInput): [WorkListType!]!
   work(pk: ID!): WorkType!
   people(pagination: OffsetPaginationInput): [PeopleListType!]!
   projects(pagination: OffsetPaginationInput): [ProjectListType!]!
@@ -67,9 +72,14 @@ type WorkListType {
   category: WorkCategoryType
   tag: WorkTagType
   isCoverImageDark: Boolean!
+  order: Int
   artWork: FileFieldType
   coverImage: FileFieldType
   images: [WorkImageType!]!
+}
+
+input WorkOrderType {
+  order: Ordering
 }
 
 type WorkTagType {
@@ -88,6 +98,7 @@ type WorkType {
   category: WorkCategoryType
   tag: WorkTagType
   isCoverImageDark: Boolean!
+  order: Int
   artWork: FileFieldType
   coverImage: FileFieldType
   images: [WorkImageType!]!
