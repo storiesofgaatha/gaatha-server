@@ -62,6 +62,7 @@ class WorkQueryTestCase(TestCase):
                 location
                 status
                 title
+                isCoverImageDark
                 images {
                     id
                     image {

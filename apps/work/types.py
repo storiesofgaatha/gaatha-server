@@ -1,11 +1,16 @@
 import strawberry
 from strawberry import auto
 from strawberry.types import Info
+import strawberry_django
 
-from utils import build_url
 from .models import Work, WorkImage, WorkTag, WorkCategory
 from gaatha.types import FileFieldType
 from .filters import WorkFilter
+
+
+@strawberry_django.ordering.order(Work)
+class WorkOrderType:
+    order: auto
 
 
 @strawberry.django.type(WorkTag)
@@ -26,7 +31,7 @@ class WorkImageType:
 
     @strawberry.field
     async def image(self, info: Info) -> FileFieldType | None:
-        return build_url(self.image, info.context['request'])
+        return FileFieldType.resolve(self.image, info)
 
 
 @strawberry.django.type(Work)
@@ -40,14 +45,16 @@ class WorkType:
     location: auto
     category: WorkCategoryType
     tag: WorkTagType
+    is_cover_image_dark: auto
+    order: auto
 
     @strawberry.field
     async def art_work(self, info: Info) -> FileFieldType | None:
-        return build_url(self.art_work, info.context['request'])
+        return FileFieldType.resolve(self.art_work, info)
 
     @strawberry.field
     async def cover_image(self, info: Info) -> FileFieldType | None:
-        return build_url(self.cover_image, info.context['request'])
+        return FileFieldType.resolve(self.cover_image, info)
 
     @strawberry.field
     async def images(self, info: Info) -> list[WorkImageType]:

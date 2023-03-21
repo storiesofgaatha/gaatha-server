@@ -32,6 +32,7 @@ class Work(models.Model):
         verbose_name=_('Description')
     )
     art_work = models.FileField(null=True, blank=True, upload_to="work/art-works")
+    is_cover_image_dark = models.BooleanField(default=False, verbose_name=_('Is Cover Image Dark ?'))
     cover_image = models.ImageField(
         null=True,
         blank=True,
@@ -57,6 +58,7 @@ class Work(models.Model):
     )
     duration = models.CharField(max_length=100, blank=True)
     location = models.CharField(max_length=500, blank=True)
+    order = models.PositiveIntegerField(blank=True, null=True)
 
     class Meta:
         verbose_name = "Work"

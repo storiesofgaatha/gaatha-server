@@ -2,7 +2,6 @@ import strawberry
 from strawberry import auto
 from strawberry.types import Info
 
-from utils import build_url
 from .models import People
 from gaatha.types import FileFieldType
 
@@ -20,11 +19,11 @@ class PeopleType:
 
     @strawberry.field
     async def profile_picture(self, info: Info) -> FileFieldType | None:
-        return build_url(self.profile_picture, info.context['request'])
+        return FileFieldType.resolve(self.profile_picture, info)
 
     @strawberry.field
     async def art_work(self, info: Info) -> FileFieldType | None:
-        return build_url(self.art_work, info.context['request'])
+        return FileFieldType.resolve(self.art_work, info)
 
 
 @strawberry.django.type(People, pagination=True)
