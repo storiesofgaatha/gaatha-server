@@ -64,6 +64,7 @@ type WorkImageType {
 type WorkListType {
   id: ID!
   title: String!
+  subTitle: String!
   description: String!
   area: String!
   status: String!
@@ -90,6 +91,7 @@ type WorkTagType {
 type WorkType {
   id: ID!
   title: String!
+  subTitle: String!
   description: String!
   area: String!
   status: String!
