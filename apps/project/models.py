@@ -8,8 +8,8 @@ class Project(models.Model):
     image = models.FileField(null=True, blank=True, upload_to="project/images")
 
     class Meta:
-        verbose_name = _('Project')
-        verbose_name_plural = _('Projects')
+        verbose_name = _('Visualization')
+        verbose_name_plural = _('Visualizations')
 
     def __str__(self):
         return self.title
