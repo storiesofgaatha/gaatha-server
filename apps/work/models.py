@@ -27,6 +27,7 @@ class WorkTag(models.Model):
 
 class Work(models.Model):
     title = models.CharField(max_length=255)
+    sub_title = models.CharField(max_length=225, blank=True)
     description = models.TextField(
         blank=True,
         verbose_name=_('Description')

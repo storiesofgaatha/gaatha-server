@@ -38,6 +38,7 @@ class WorkImageType:
 class WorkType:
     id: auto
     title: auto
+    sub_title: auto
     description: auto
     area: auto
     status: auto
