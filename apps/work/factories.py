@@ -5,7 +5,6 @@ from django.core.files.uploadedfile import SimpleUploadedFile
 
 from .models import (
     Work,
-    WorkTag,
     WorkCategory,
     WorkImage,
 )
@@ -18,16 +17,8 @@ class WorkCategoryFactory(DjangoModelFactory):
         model = WorkCategory
 
 
-class WorkTagFactory(DjangoModelFactory):
-    name = fuzzy.FuzzyText(length=15)
-
-    class Meta:
-        model = WorkTag
-
-
 class WorkFactory(DjangoModelFactory):
     category = factory.SubFactory(WorkCategoryFactory)
-    tag = factory.SubFactory(WorkTagFactory)
     cover_image = SimpleUploadedFile('test.jpg', b'whatevercontentsyouwant')
     art_work = SimpleUploadedFile('test.jpg', b'whatevercontentsyouwant')
     title = fuzzy.FuzzyText(length=15)

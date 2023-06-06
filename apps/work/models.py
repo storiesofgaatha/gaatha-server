@@ -14,17 +14,6 @@ class WorkCategory(models.Model):
         return self.name
 
 
-class WorkTag(models.Model):
-    name = models.CharField(max_length=100, verbose_name=_('Name'))
-
-    class Meta:
-        verbose_name = "Tag"
-        verbose_name_plural = "Tags"
-
-    def __str__(self):
-        return self.name
-
-
 class Work(models.Model):
     title = models.CharField(max_length=255)
     sub_title = models.CharField(max_length=225, blank=True)
@@ -50,13 +39,6 @@ class Work(models.Model):
         related_name='work_category'
     )
     status = models.CharField(max_length=250, verbose_name=_('Status'))
-    tag = models.ForeignKey(
-        WorkTag,
-        verbose_name=_('Tag'),
-        on_delete=models.SET_NULL,
-        blank=True,
-        null=True,
-    )
     duration = models.CharField(max_length=100, blank=True)
     location = models.CharField(max_length=500, blank=True)
     order = models.PositiveIntegerField(blank=True, null=True)

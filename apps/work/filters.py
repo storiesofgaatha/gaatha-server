@@ -7,4 +7,3 @@ from .models import Work
 @strawberry.django.filters.filter(Work)
 class WorkFilter:
     category: Optional[strawberry.ID]
-    tag: Optional[strawberry.ID]

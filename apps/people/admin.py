@@ -10,4 +10,5 @@ class PeopleAdmin(admin.ModelAdmin):
         'designation',
         'email',
         'is_current_employee',
+        'order',
     ]

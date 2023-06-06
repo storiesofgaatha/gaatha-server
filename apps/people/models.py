@@ -14,6 +14,7 @@ class People(models.Model):
         upload_to="people/art-works",
         verbose_name=_("Art Work")
     )
+    order = models.PositiveIntegerField(blank=True, null=True)
     email = models.EmailField(max_length=250, blank=True, verbose_name=_('Email'))
     designation = models.CharField(
         max_length=100, blank=True, verbose_name=_("Designation")
