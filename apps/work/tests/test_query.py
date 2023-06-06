@@ -18,10 +18,6 @@ class WorkQueryTestCase(TestCase):
                     id
                     name
                 }
-                tag {
-                    id
-                    name
-                }
               }
             }
         """
@@ -42,10 +38,6 @@ class WorkQueryTestCase(TestCase):
                         id=str(work.category.id),
                         name=work.category.name,
                     ),
-                    tag=dict(
-                        id=str(work.tag.id),
-                        name=work.tag.name,
-                    )
                 ) for work in works
             ], resp['data']['works']
         )
@@ -74,10 +66,6 @@ class WorkQueryTestCase(TestCase):
                 category {
                     id
                     name
-                }
-                tag {
-                    name
-                    id
                 }
               }
             }

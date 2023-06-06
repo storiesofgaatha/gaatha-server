@@ -3,7 +3,7 @@ from strawberry import auto
 from strawberry.types import Info
 import strawberry_django
 
-from .models import Work, WorkImage, WorkTag, WorkCategory
+from .models import Work, WorkImage, WorkCategory
 from gaatha.types import FileFieldType
 from .filters import WorkFilter
 
@@ -11,12 +11,6 @@ from .filters import WorkFilter
 @strawberry_django.ordering.order(Work)
 class WorkOrderType:
     order: auto
-
-
-@strawberry.django.type(WorkTag)
-class WorkTagType:
-    id: auto
-    name: auto
 
 
 @strawberry.django.type(WorkCategory)
@@ -45,7 +39,6 @@ class WorkType:
     duration: auto
     location: auto
     category: WorkCategoryType
-    tag: WorkTagType
     is_cover_image_dark: auto
     order: auto
 
@@ -70,4 +63,3 @@ class WorkListType(WorkType):
 @strawberry.type
 class FilterChoiceType:
     work_category: list[WorkCategoryType] | None
-    work_tag: list[WorkTagType] | None

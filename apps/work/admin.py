@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from .models import Work, WorkImage, WorkCategory, WorkTag
+from .models import Work, WorkImage, WorkCategory
 from .forms import WorkForm
 
 
@@ -28,13 +28,6 @@ class WorkAdmin(admin.ModelAdmin):
 
 @admin.register(WorkCategory)
 class CategoryAdmin(admin.ModelAdmin):
-    list_display = [
-        'name'
-    ]
-
-
-@admin.register(WorkTag)
-class TagAdmin(admin.ModelAdmin):
     list_display = [
         'name'
     ]

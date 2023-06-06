@@ -1,9 +1,15 @@
 import strawberry
 from strawberry import auto
 from strawberry.types import Info
+import strawberry_django
 
 from .models import People
 from gaatha.types import FileFieldType
+
+
+@strawberry_django.ordering.order(People)
+class PeopleOrderType:
+    order: auto
 
 
 @strawberry.django.type(People)
@@ -16,6 +22,7 @@ class PeopleType:
     is_current_employee: auto
     linkedin_url: auto
     instagram_url: auto
+    order: auto
 
     @strawberry.field
     async def profile_picture(self, info: Info) -> FileFieldType | None:
