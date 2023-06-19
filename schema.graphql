@@ -26,6 +26,7 @@ type PeopleListType {
   designation: String!
   qualification: String!
   isCurrentEmployee: Boolean!
+  isFounder: Boolean!
   linkedinUrl: String!
   instagramUrl: String!
   order: Int

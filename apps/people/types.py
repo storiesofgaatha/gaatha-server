@@ -20,6 +20,7 @@ class PeopleType:
     designation: auto
     qualification: auto
     is_current_employee: auto
+    is_founder: auto
     linkedin_url: auto
     instagram_url: auto
     order: auto

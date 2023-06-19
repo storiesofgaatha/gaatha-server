@@ -23,6 +23,7 @@ class People(models.Model):
         max_length=250, blank=True, verbose_name=_("Qualification")
     )
     is_current_employee = models.BooleanField(default=True, verbose_name=_("Is Current Employee"))
+    is_founder = models.BooleanField(default=False, verbose_name=_("Is Founding Member"))
     linkedin_url = models.URLField(
         max_length=500, verbose_name=_("LinkedIn"), blank=True
     )

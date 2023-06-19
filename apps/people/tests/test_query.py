@@ -29,6 +29,7 @@ class PeopleQueryTestCase(TestCase):
                     email=person.email,
                     instagramUrl=person.instagram_url,
                     isCurrentEmployee=person.is_current_employee,
+                    isFounder=person.is_founder,
                     linkedinUrl=person.linkedin_url,
                     name=person.name,
                     qualification=person.qualification,
