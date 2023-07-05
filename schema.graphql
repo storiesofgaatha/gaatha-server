@@ -1,6 +1,8 @@
 type FileFieldType {
   name: String!
   url: String!
+  width: Int!
+  height: Int!
 }
 
 type FilterChoiceType {

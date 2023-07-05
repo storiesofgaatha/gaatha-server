@@ -9,6 +9,8 @@ from django.db import models
 class FileFieldType:
     name: str
     url: str
+    width: int
+    height: int
 
     @staticmethod
     def resolve(file: models.FileField, info: Info) -> FileFieldType | None:
@@ -16,4 +18,7 @@ class FileFieldType:
             return FileFieldType(
                 name=file.name,
                 url=info.context['request'].build_absolute_uri(file.url),
+                # TODO file width ,height calculation is a heavy operation so it should be saved in database in furute.
+                width=file.width,
+                height=file.height
             )
