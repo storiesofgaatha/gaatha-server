@@ -15,8 +15,13 @@ class WorkCategory(models.Model):
 
 
 class Work(models.Model):
+    class WorkType(models.TextChoices):
+        ARCHITECTURE = 'architecture', 'Architecture'
+        VISUALIZATION = 'visualization', 'Visualization'
+
     title = models.CharField(max_length=255)
     sub_title = models.CharField(max_length=225, blank=True)
+    work_type = models.CharField(max_length=225, choices=WorkType.choices, default=WorkType.ARCHITECTURE)
     description = models.TextField(
         blank=True,
         verbose_name=_('Description')
