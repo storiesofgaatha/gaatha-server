@@ -56,7 +56,6 @@ INSTALLED_APPS = [
     # local apps
     'apps.work',
     'apps.people',
-    'apps.project',
 
     # thirdparty apps
     'strawberry.django',
