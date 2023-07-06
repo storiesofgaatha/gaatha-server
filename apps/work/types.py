@@ -40,7 +40,7 @@ class WorkImageType:
 class WorkType:
     id: auto
     title: auto
-    work_type: auto
+    work_type: WorkTypeEnum
     sub_title: auto
     description: auto
     area: auto

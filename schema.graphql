@@ -62,7 +62,7 @@ type WorkImageType {
 type WorkListType {
   id: ID!
   title: String!
-  workType: String!
+  workType: WorkTypeEnum!
   subTitle: String!
   description: String!
   area: String!
@@ -85,7 +85,7 @@ input WorkOrderType {
 type WorkType {
   id: ID!
   title: String!
-  workType: String!
+  workType: WorkTypeEnum!
   subTitle: String!
   description: String!
   area: String!
@@ -99,4 +99,9 @@ type WorkType {
   coverImage: FileFieldType
   images: [WorkImageType!]!
   workTypeLabel: String
+}
+
+enum WorkTypeEnum {
+  ARCHITECTURE
+  GRAPHICS_AND_VISUALIZATION
 }
