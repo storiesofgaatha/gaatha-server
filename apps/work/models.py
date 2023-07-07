@@ -58,7 +58,7 @@ class Work(models.Model):
     def clean(self):
         if self.work_type == Work.WorkType.GRAPHICS_AND_VISUALIZATION and self.category:
             raise ValidationError(
-                {'category': "Cannot select category when work type is Visualization"})
+                {'category': "Cannot select category when work type is Graphics and Visualization"})
 
 
 class WorkImage(models.Model):

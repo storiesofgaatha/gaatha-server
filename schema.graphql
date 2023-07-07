@@ -52,6 +52,7 @@ type WorkCategoryType {
 
 input WorkFilter {
   category: ID
+  workType: WorkTypeEnum
 }
 
 type WorkImageType {
