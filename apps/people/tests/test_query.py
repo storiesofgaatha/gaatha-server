@@ -10,6 +10,7 @@ class PeopleQueryTestCase(TestCase):
                 id
                 designation
                 email
+                isFounder
                 instagramUrl
                 isCurrentEmployee
                 linkedinUrl
