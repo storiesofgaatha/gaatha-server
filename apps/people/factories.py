@@ -16,6 +16,7 @@ class PeopleFactory(DjangoModelFactory):
     designation = fuzzy.FuzzyText(length=50)
     qualification = fuzzy.FuzzyText(length=50)
     is_current_employee = True
+    is_founder = True
     linkedin_url = factory.Sequence(lambda n: f'https://www.linkedin.com/{n}')
     instagram_url = factory.Sequence(lambda n: f'https://www.instagram.com/{n}')
 
