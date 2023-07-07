@@ -7,7 +7,6 @@ from apps.people.types import PeopleListType
 from apps.people.types import (
     PeopleOrderType
 )
-from apps.project.types import ProjectListType
 from apps.work.models import (
     WorkCategory,
 )
@@ -35,7 +34,6 @@ class Query():
     works: list[WorkListType] = strawberry.django.field(order=WorkOrderType)
     work: WorkType = strawberry.django.field()
     people: list[PeopleListType] = strawberry.django.field(order=PeopleOrderType)
-    projects: list[ProjectListType] = strawberry.django.field()
 
     @strawberry.field
     async def filter_choices(self) -> FilterChoiceType:

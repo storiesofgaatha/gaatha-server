@@ -1,4 +1,4 @@
-
+from django.core.exceptions import ValidationError
 from django.utils.translation import gettext_lazy as _
 from django.db import models
 
@@ -15,8 +15,13 @@ class WorkCategory(models.Model):
 
 
 class Work(models.Model):
+    class WorkType(models.TextChoices):
+        ARCHITECTURE = 'architecture', 'Architecture'
+        GRAPHICS_AND_VISUALIZATION = 'graphics_and_visualizations', 'Graphics and Visualizations'
+
     title = models.CharField(max_length=255)
     sub_title = models.CharField(max_length=225, blank=True)
+    work_type = models.CharField(max_length=225, choices=WorkType.choices, default=WorkType.ARCHITECTURE)
     description = models.TextField(
         blank=True,
         verbose_name=_('Description')
@@ -49,6 +54,11 @@ class Work(models.Model):
 
     def __str__(self):
         return str(self.id)
+
+    def clean(self):
+        if self.work_type == Work.WorkType.GRAPHICS_AND_VISUALIZATION and self.category:
+            raise ValidationError(
+                {'category': "Cannot select category when work type is Graphics and Visualization"})
 
 
 class WorkImage(models.Model):

@@ -14,6 +14,7 @@ class WorkAdmin(admin.ModelAdmin):
     form = WorkForm
     list_display = [
         'title',
+        'work_type',
         'status',
         'category',
         'status',

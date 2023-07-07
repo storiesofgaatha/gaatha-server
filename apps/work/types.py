@@ -2,10 +2,18 @@ import strawberry
 from strawberry import auto
 from strawberry.types import Info
 import strawberry_django
+from typing import Optional
 
-from .models import Work, WorkImage, WorkCategory
+from gaatha.utils import get_enum_label
 from gaatha.types import FileFieldType
+
 from .filters import WorkFilter
+from .enums import WorkTypeEnum
+from .models import (
+    Work,
+    WorkCategory,
+    WorkImage,
+)
 
 
 @strawberry_django.ordering.order(Work)
@@ -32,6 +40,7 @@ class WorkImageType:
 class WorkType:
     id: auto
     title: auto
+    work_type: WorkTypeEnum
     sub_title: auto
     description: auto
     area: auto
@@ -53,6 +62,10 @@ class WorkType:
     @strawberry.field
     async def images(self, info: Info) -> list[WorkImageType]:
         return await info.context["work_image_loader"].load(self.id)
+
+    @strawberry.field
+    async def work_type_label(self, info: Info) -> Optional[str]:
+        return get_enum_label(WorkTypeEnum, self.work_type)
 
 
 @strawberry.django.type(Work, pagination=True, filters=WorkFilter)
