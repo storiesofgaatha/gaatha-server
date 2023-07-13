@@ -8,6 +8,8 @@ WORKDIR /code
 RUN apt-get update -y && \
     apt-get install -y \
         gettext \
+        # required for opencv-python for image width, height.
+        libgl1-mesa-glx \
         wait-for-it && \
     rm -rf /var/lib/apt/lists/*
 
