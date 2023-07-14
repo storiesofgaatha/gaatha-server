@@ -16,10 +16,13 @@ class FileFieldType:
 
     @staticmethod
     def resolve(file: models.FileField, info: Info) -> FileFieldType | None:
+        if not file:
+            return
         width = None
         height = None
         image = cv2.imread(file.path)
-        height, width, _ = image.shape
+        if image is not None and image.any():
+            height, width, _ = image.shape
         # TODO file width, height calculation is a heavy operation so it should be saved in the database in future.
         return FileFieldType(
             name=file.name,
