@@ -1,0 +1,13 @@
+apiVersion: v2
+name: gaatha-backend-helm
+description: "Helm Chart to deploy the Gaatha Backend "
+type: application
+version: 0.0.1
+sources:
+  - https://github.com/stories-of-gaatha/gaatha-server/
+
+dependencies:
+  - name: django-app
+    alias: app
+    version: 0.1.2
+    repository: oci://ghcr.io/toggle-corp/charts

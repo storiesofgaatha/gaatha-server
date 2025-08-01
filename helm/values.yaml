@@ -1,0 +1,86 @@
+app:
+  environment: PROD
+  # Global Image
+  image:
+    name:
+    tag: 
+    imagePullPolicy: IfNotPresent
+  ingress:
+    enabled: true
+    className: nginx
+    annotations:
+      nginx.ingress.kubernetes.io/proxy-body-size: "20m"
+    host: 
+
+  redis:
+    enabled: false
+  
+  postgresql:
+    enabled: true
+    fullnameOverride: "gaatha-postgresql"
+    architecture: standalone
+    auth:
+      postgresPassword: "2Ip9-+2%yf`d[hs+nbd1"
+      username: "gaatha"
+      password: "gaatha"
+      database: "gaatha"
+    primary:
+      persistence: 
+        enabled: "true"
+        storageClass: "local-path"
+        size: 8Gi
+  api:
+    enabled: true
+    replicaCount: 1
+    containerPort: 80
+    command: ["gunicorn", "main.wsgi:application", "--timeout=40", "--bind", "0.0.0.0:80"]
+    resources:
+      requests:
+        cpu: "2"
+        memory: 0.5Gi
+      limits:
+        cpu: "4"
+        memory: 1Gi
+        
+  worker:
+    enabled: false
+ 
+  argoHook:
+    enabled: true
+    resources:
+      requests:
+        cpu: "0.1"
+        memory: 1Gi
+      limits:
+        cpu: "1"
+        memory: 2Gi
+    hooks:
+      # NOTE: Make sure keys are lowercase
+      db-migrate:
+        enabled: true
+        hook: PostSync
+        preserveHistory: true
+        command: ["/bin/bash", "-c", "./manage.py wait_for_resources --db && ./manage.py migrate"]
+      collect-static:
+        enabled: true
+        hook: PostSync
+        command: ["/bin/bash", "-c", "./manage.py migrate --noinput"]
+   # NOTE: Check main/settings.py for all available options
+  env:
+    APP_RELEASE: "{{ $.Values.image.tag }}"
+    APP_ENVIRONMENT: "{{ $.Values.environment }}"
+    TIME_ZONE: "Asia/Kathmandu"
+    DEBUG: "false"
+    LANGUAGE_CODE: ""
+    # App Domain
+    ALLOWED_HOSTS: ""
+
+  secrets:
+    DJANGO_SECRET_KEY: "thoh-2i##o2j^6--_sg-oq!j9ohqipx3_a-c2+"
+    # Postgres
+    DB_NAME: "{{ $.Values.postgresql.auth.database }}"
+    DB_USER: "postgres"
+    DB_PWD: "{{ $.Values.postgresql.auth.postgresPassword }}"
+    DB_HOST: "{{ include \"postgresql.v1.primary.fullname\" $.Subcharts.postgresql }}"
+    DB_PORT: "{{ include \"postgresql.v1.service.port\" $.Subcharts.postgresql }}"
+    
