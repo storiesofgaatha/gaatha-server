@@ -1,4 +1,4 @@
-name: Publish Helm
+name: Helm
 on:
   workflow_dispatch:
   # Build and push Docker image and Helm charts on every push to develop and project branch
@@ -6,7 +6,6 @@ on:
     branches:
       - develop
       - project/*
-
 permissions:
   packages: write
 
