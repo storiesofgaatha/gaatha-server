@@ -1,16 +1,13 @@
 app:
-  environment: PROD
-  # Global Image
   image:
-    name:
-    tag: 
-    imagePullPolicy: IfNotPresent
+    name: SET-BY-CICD-IMAGE
+    tag: SET-BY-CICD-TAG
+
   ingress:
     enabled: true
     className: nginx
     annotations:
-      nginx.ingress.kubernetes.io/proxy-body-size: "20m"
-    host: 
+      nginx.ingress.kubernetes.io/proxy-body-size: "50m"
 
   redis:
     enabled: false
@@ -21,14 +18,14 @@ app:
     architecture: standalone
     auth:
       postgresPassword: "2Ip9-+2%yf`d[hs+nbd1"
-      username: "gaatha"
-      password: "gaatha"
-      database: "gaatha"
+      username: ""
+      password: ""
+      database: ""
     primary:
       persistence: 
         enabled: "true"
-        storageClass: "local-path"
-        size: 8Gi
+        storageClass: ""
+        size: 2Gi
   api:
     enabled: true
     replicaCount: 1
@@ -39,7 +36,7 @@ app:
         cpu: "2"
         memory: 0.5Gi
       limits:
-        cpu: "4"
+        cpu: "1"
         memory: 1Gi
         
   worker:
@@ -65,7 +62,6 @@ app:
         enabled: true
         hook: PostSync
         command: ["/bin/bash", "-c", "./manage.py migrate --noinput"]
-   # NOTE: Check main/settings.py for all available options
   env:
     APP_RELEASE: "{{ $.Values.image.tag }}"
     APP_ENVIRONMENT: "{{ $.Values.environment }}"
@@ -73,14 +69,13 @@ app:
     DEBUG: "false"
     LANGUAGE_CODE: ""
     # App Domain
-    ALLOWED_HOSTS: ""
 
   secrets:
     DJANGO_SECRET_KEY: "thoh-2i##o2j^6--_sg-oq!j9ohqipx3_a-c2+"
     # Postgres
     DB_NAME: "{{ $.Values.postgresql.auth.database }}"
     DB_USER: "postgres"
-    DB_PWD: "{{ $.Values.postgresql.auth.postgresPassword }}"
+    DB_PWD: "{{ include \"postgresql.v1.primary.fullname\" $.Subcharts.postgresql }}"
     DB_HOST: "{{ include \"postgresql.v1.primary.fullname\" $.Subcharts.postgresql }}"
     DB_PORT: "{{ include \"postgresql.v1.service.port\" $.Subcharts.postgresql }}"
     

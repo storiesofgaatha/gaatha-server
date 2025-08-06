@@ -1,0 +1,6 @@
+dependencies:
+- name: django-app
+  repository: oci://ghcr.io/toggle-corp/charts
+  version: 0.1.2
+digest: sha256:345fe5056e46773c9fd69766d0cbd1184c0892c9db196cacc6fab2ce2561b4c0
+generated: "2025-08-06T16:10:01.410706302+05:45"
