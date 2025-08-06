@@ -1,27 +1,37 @@
-FROM python:3.11-bookworm
+FROM python:3.11-slim-bookworm AS base
+COPY --from=ghcr.io/astral-sh/uv:0.6.2 /uv /uvx /bin/
+
+LABEL maintainer="TC Dev"
 
 
-ENV PYTHONUNBUFFERED 1
+ENV PYTHONUNBUFFERED=1
+
+ENV UV_COMPILE_BYTECODE=1
+ENV UV_LINK_MODE=copy
+ENV UV_PROJECT_ENVIRONMENT="/usr/local/"
 
 WORKDIR /code
 
-RUN apt-get update -y && \
-    apt-get install -y \
-        gettext \
+RUN --mount=type=cache,target=/root/.cache/uv \
+    --mount=type=bind,source=uv.lock,target=uv.lock \
+    --mount=type=bind,source=pyproject.toml,target=pyproject.toml \
+    apt-get update -y \
+    # FIXME: Check and clean up not required packages from here
+    && apt-get install -y --no-install-recommends \
+        # Build required packages
+        gdal-bin build-essential gcc libc-dev libgdal-dev libproj-dev \
+        # Helper packages
+        procps \
         # required for opencv-python for image width, height.
-        libgl1-mesa-glx \
-        wait-for-it && \
-    rm -rf /var/lib/apt/lists/*
+        libgl1 \
+        libglib2.0-0 \
+        wait-for-it  \
+    && uv lock --locked --offline \
+        && uv sync --frozen --no-install-project --all-groups \
+    # Clean-up
+    && apt-get remove -y build-essential gcc libc-dev libgdal-dev libproj-dev \
+    && apt-get autoremove -y \
+    && rm -rf /var/lib/apt/lists/*
 
-COPY pyproject.toml poetry.lock /code/
-
-# Upgrade pip and install python packages for code
-RUN pip install --upgrade --no-cache-dir pip poetry \
-    && poetry --version \
-    # Configure to use system instead of virtualenvs
-    && poetry config virtualenvs.create false \
-    && poetry install --no-root \
-    # Remove installer
-    && pip uninstall -y poetry virtualenv-clone virtualenv
 
 COPY . /code/
