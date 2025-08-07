@@ -1,0 +1,42 @@
+app:
+  environment: Alpha
+  image:
+    name: ghcr.io/stories-of-gaatha/gaatha-server-dev
+    tag: latest
+
+  ingress:
+    enabled: true
+    className: nginx
+    host: test.com
+
+  redis:
+    master:
+      persistence:
+        size: .5Gi
+        storageClass: longhorn
+  postgresql:
+    enabled: true
+    auth:
+      postgresPassword: "testing-passowrd"
+      username: "test"
+      password: "testing-passowrd"
+      database: "test"
+    primary:
+      persistence:
+        storageClass: "longhorn"
+        size: 1Gi
+  # NOTE: Check main/settings.py for all available options
+  env:
+    # App Domain
+    DJANGO_DEBUG: "false"
+    TIME_ZONE: "Asia/Kathmandu"
+
+  # NOTE: Check main/settings.py for all available options
+  secrets:
+    DJANGO_SECRET_KEY: "very-secret-key"
+    # Postgres
+    DB_NAME: "test"
+    DB_USER: "test"
+    DB_PWD: "test"
+    DB_HOST: "test"
+    DB_PORT: "test"
