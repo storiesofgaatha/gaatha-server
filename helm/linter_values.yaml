@@ -30,6 +30,8 @@ app:
     # App Domain
     DJANGO_DEBUG: "false"
     TIME_ZONE: "Asia/Kathmandu"
+    SESSION_COOKIE_DOMAIN: "https://test-session.com"
+    CSRF_COOKIE_DOMAIN: "https://test-cookie.com"
 
   # NOTE: Check main/settings.py for all available options
   secrets:

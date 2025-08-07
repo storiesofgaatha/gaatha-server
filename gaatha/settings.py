@@ -28,6 +28,8 @@ env = environ.Env(
     DB_PORT=str,
     LANGUAGE_CODE=str,
     TIME_ZONE=str,
+    SESSION_COOKIE_DOMAIN=str,
+    CSRF_COOKIE_DOMAIN=str,
 )
 
 

@@ -30,7 +30,7 @@ app:
     enabled: true
     replicaCount: 1
     containerPort: 80
-    command: ["gunicorn", "main.wsgi:application", "--timeout=40", "--bind", "0.0.0.0:80"]
+    command: ["gunicorn", "gaatha.wsgi:application", "--timeout=40", "--bind", "0.0.0.0:80"]
     resources:
       requests:
         cpu: "2"
@@ -68,7 +68,8 @@ app:
     TIME_ZONE: "Asia/Kathmandu"
     DEBUG: "false"
     LANGUAGE_CODE: ""
-    # App Domain
+    SESSION_COOKIE_DOMAIN: "{{ required \".app.env.SESSION_COOKIE_DOMAIN\" nil }}"
+    CSRF_COOKIE_DOMAIN: "{{ required \".app.env.CSRF_COOKIE_DOMAIN\" nil }}"
 
   secrets:
     DJANGO_SECRET_KEY: "thoh-2i##o2j^6--_sg-oq!j9ohqipx3_a-c2+"
