@@ -17,7 +17,13 @@ services:
     tty: true
     environment:
       DEBUG: ${DEBUG:-True}
+      APP_ENVIRONMENT: ${APP_ENVIRONMENT:-DEV}
+      # Domain configs
       DJANGO_SECRET_KEY: ${DJANGO_SECRET_KEY:?err}
+      APP_DOMAIN: ${APP_DOMAIN:-http://localhost:8020}
+      FRONTEND_DOMAIN: ${FRONTEND_DOMAIN:-http://localhost:3000}  # NOTE: Not used right now
+      SESSION_COOKIE_DOMAIN: ${SESSION_COOKIE_DOMAIN:-localhost}
+      CSRF_COOKIE_DOMAIN: ${CSRF_COOKIE_DOMAIN:-localhost}
       DB_NAME: ${DB_NAME:-postgres}
       DB_USER: ${DB_USER:-postgres}
       DB_PWD: ${DB_PWD:-postgres}

@@ -28,10 +28,16 @@ app:
   # NOTE: Check main/settings.py for all available options
   env:
     # App Domain
+    SESSION_COOKIE_DOMAIN: .test.com
+    CSRF_COOKIE_DOMAIN: .test.com
+    APP_TYPE: "WEB"
+    APP_DOMAIN: "https://gaatha.com"
     DJANGO_DEBUG: "false"
     TIME_ZONE: "Asia/Kathmandu"
+    FRONTEND_DOMAIN: "https://gaatha-frontend.com"
+    SESSION_COOKIE_DOMAIN: "https://test-session.com"
+    CSRF_COOKIE_DOMAIN: "https://test-cookie.com"
 
-  # NOTE: Check main/settings.py for all available options
   secrets:
     DJANGO_SECRET_KEY: "very-secret-key"
     # Postgres
