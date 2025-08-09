@@ -17,7 +17,7 @@ app:
     fullnameOverride: "gaatha-postgresql"
     architecture: standalone
     auth:
-      postgresPassword: "2Ip9-+2%yf`d[hs+nbd1"
+      postgresPassword: ""
       username: ""
       password: ""
       database: ""
@@ -61,16 +61,20 @@ app:
       collect-static:
         enabled: true
         hook: PostSync
-        command: ["/bin/bash", "-c", "./manage.py migrate --noinput"]
+        command: ["/bin/bash", "-c", "./manage.py collectstatic --noinput"]
+
   env:
-    APP_RELEASE: "{{ $.Values.image.tag }}"
     APP_ENVIRONMENT: "{{ $.Values.environment }}"
     TIME_ZONE: "Asia/Kathmandu"
     DEBUG: "false"
-    LANGUAGE_CODE: ""
+    LANGUAGE_CODE: "en"
+    # App Domain
+    APP_TYPE: "WEB"
+    APP_DOMAIN: "{{ required \".app.env.APP_DOMAIN\" nil }}"
+    FRONTEND_DOMAIN: "{{ required \".app.env.FRONTEND_DOMAIN\" nil }}"
     SESSION_COOKIE_DOMAIN: "{{ required \".app.env.SESSION_COOKIE_DOMAIN\" nil }}"
     CSRF_COOKIE_DOMAIN: "{{ required \".app.env.CSRF_COOKIE_DOMAIN\" nil }}"
-
+  
   secrets:
     DJANGO_SECRET_KEY: "thoh-2i##o2j^6--_sg-oq!j9ohqipx3_a-c2+"
     # Postgres

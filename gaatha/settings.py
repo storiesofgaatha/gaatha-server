@@ -20,16 +20,20 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 env = environ.Env(
     DEBUG=(bool, False),
     DJANGO_SECRET_KEY=str,
-    ALLOWED_HOSTS=(list, ['*']),
+    ADDITIONAL_ALLOWED_HOSTS=(list, []),
+    APP_ENVIRONMENT=str,
     DB_NAME=str,
     DB_USER=str,
     DB_PWD=str,
     DB_HOST=str,
     DB_PORT=str,
     LANGUAGE_CODE=str,
-    TIME_ZONE=str,
-    SESSION_COOKIE_DOMAIN=str,
-    CSRF_COOKIE_DOMAIN=str,
+    TIME_ZONE=(str, "UTC"),
+    APP_DOMAIN=str,  # Eg: https://api.example.org
+    FRONTEND_DOMAIN=str,  # Eg: https://web.example.org
+    SESSION_COOKIE_DOMAIN=str,  # .example.com
+    CSRF_COOKIE_DOMAIN=str,  # .example.com
+    ADDITIONAL_TRUSTED_ORIGINS=(list, [])
 )
 
 
@@ -41,8 +45,15 @@ SECRET_KEY = env('DJANGO_SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = env('DEBUG')
+APP_DOMAIN = env.url("APP_DOMAIN")
+FRONTEND_DOMAIN = env.url("FRONTEND_DOMAIN")
+APP_ENVIRONMENT = env("APP_ENVIRONMENT").upper()
 
-ALLOWED_HOSTS = ['server', *env.list('ALLOWED_HOSTS')]
+ALLOWED_HOSTS = [
+    'server',
+    *env('ADDITIONAL_ALLOWED_HOSTS'),
+    APP_DOMAIN.hostname,
+    ]
 
 
 # Application definition
@@ -154,6 +165,66 @@ MEDIA_URL = "/media/"
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
+
+# Security Header configuration
+
+TRUSTED_ORIGINS = [
+    APP_DOMAIN.geturl(),
+    FRONTEND_DOMAIN.geturl(),
+    *env("ADDITIONAL_TRUSTED_ORIGINS"),
+]
+
+SESSION_COOKIE_NAME = f"GAATHA-{APP_ENVIRONMENT}-SESSIONID"
+CSRF_COOKIE_NAME = f"GAATHA-{APP_ENVIRONMENT}-CSRFTOKEN"
+SECURE_BROWSER_XSS_FILTER = True
+SECURE_CONTENT_TYPE_NOSNIFF = True
+X_FRAME_OPTIONS = "DENY"
+CSP_DEFAULT_SRC = ["'self'"]
+SECURE_REFERRER_POLICY = "same-origin"
+if APP_DOMAIN.scheme == "https":
+    SESSION_COOKIE_NAME = f"__Secure-{SESSION_COOKIE_NAME}"
+    SESSION_COOKIE_SECURE = True
+    SESSION_COOKIE_HTTPONLY = True
+    SECURE_HSTS_SECONDS = 30
+    SECURE_HSTS_INCLUDE_SUBDOMAINS = True
+    SECURE_HSTS_PRELOAD = True
+    SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
+    CSRF_TRUSTED_ORIGINS = TRUSTED_ORIGINS
+
+# -- https://docs.djangoproject.com/en/3.2/ref/settings/#std:setting-SESSION_COOKIE_DOMAIN
+SESSION_COOKIE_DOMAIN = env("SESSION_COOKIE_DOMAIN")
+# https://docs.djangoproject.com/en/3.2/ref/settings/#csrf-cookie-domain
+CSRF_COOKIE_DOMAIN = env("CSRF_COOKIE_DOMAIN")
+
+
+# CORS
+CORS_ALLOWED_ORIGINS = TRUSTED_ORIGINS
+CSRF_TRUSTED_ORIGINS = TRUSTED_ORIGINS
+
+CORS_ALLOW_CREDENTIALS = True
+CORS_URLS_REGEX = r"(^/media/.*$)|(^/graphql/$)"
+CORS_ALLOW_METHODS = (
+    "DELETE",
+    "GET",
+    "OPTIONS",
+    "PATCH",
+    "POST",
+    "PUT",
+)
+
+CORS_ALLOW_HEADERS = (
+    "accept",
+    "accept-encoding",
+    "authorization",
+    "content-type",
+    "dnt",
+    "origin",
+    "user-agent",
+    "x-csrftoken",
+    "x-requested-with",
+    "baggage",
+)
+
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
