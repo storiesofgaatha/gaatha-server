@@ -80,7 +80,6 @@ app:
     # Postgres
     DB_NAME: "{{ $.Values.postgresql.auth.database }}"
     DB_USER: "postgres"
-    DB_PWD: "{{ include \"postgresql.v1.primary.fullname\" $.Subcharts.postgresql }}"
+    DB_PWD: "{{ $.Values.postgresql.auth.postgresPassword }}"
     DB_HOST: "{{ include \"postgresql.v1.primary.fullname\" $.Subcharts.postgresql }}"
     DB_PORT: "{{ include \"postgresql.v1.service.port\" $.Subcharts.postgresql }}"
-    
