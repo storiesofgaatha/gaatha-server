@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/4.1/ref/settings/
 """
 import os
 from pathlib import Path
+
 import environ
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -33,7 +34,22 @@ env = environ.Env(
     FRONTEND_DOMAIN=str,  # Eg: https://web.example.org
     SESSION_COOKIE_DOMAIN=str,  # .example.com
     CSRF_COOKIE_DOMAIN=str,  # .example.com
-    ADDITIONAL_TRUSTED_ORIGINS=(list, [])
+    ADDITIONAL_TRUSTED_ORIGINS=(list, []),
+
+    # File System
+    DJANGO_STATIC_ROOT=(str, os.path.join(BASE_DIR, "code/static")),
+    DJANGO_MEDIA_ROOT=(str, os.path.join(BASE_DIR, "code/media")),
+    DJANGO_STATIC_URL=(str, "/static/"),
+    DJANGO_MEDIA_URL=(str, "/media/"),
+
+    # AWS S3
+    AWS_S3_BUCKET_ENABLE=(bool, False),
+    AWS_S3_ENDPOINT_URL=str,
+    AWS_S3_ACCESS_KEY_ID=str,
+    AWS_S3_SECRET_ACCESS_KEY=str,
+    AWS_S3_REGION=str,
+    AWS_S3_MEDIA_BUCKET_NAME=str,
+    AWS_S3_STATIC_BUCKET_NAME=str,
 )
 
 
@@ -155,13 +171,40 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
 
 STATICFILES_DIRS = [os.path.join(BASE_DIR, "static")]
-STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
-MEDIA_ROOT = os.path.join(BASE_DIR, "media")
+
+if env("AWS_S3_BUCKET_ENABLE"):
+    AWS_S3_ENDPOINT_URL = env("AWS_S3_ENDPOINT_URL")
+    AWS_S3_ACCESS_KEY_ID = env("AWS_S3_ACCESS_KEY_ID")
+    AWS_S3_SECRET_ACCESS_KEY = env("AWS_S3_SECRET_ACCESS_KEY")
+    AWS_S3_REGION_NAME = env("AWS_S3_REGION")
+
+    STORAGES = {
+        "default": {
+            "BACKEND": "storages.backends.s3.S3Storage",
+            "OPTIONS": {
+                "bucket_name": env("AWS_S3_MEDIA_BUCKET_NAME"),
+                "location": "media/",
+                "file_overwrite": False,
+            },
+        },
+        "staticfiles": {
+            "BACKEND": "storages.backends.s3.S3Storage",
+            "OPTIONS": {
+                "bucket_name": env("AWS_S3_STATIC_BUCKET_NAME"),
+                "querystring_auth": False,
+                "location": "static/",
+                "file_overwrite": True,
+            },
+        },
+    }
+else:
+    STATIC_ROOT = env("DJANGO_STATIC_ROOT")
+    MEDIA_ROOT = env("DJANGO_MEDIA_ROOT")
 
 
 # Settings for local storage and local staticfiles
-STATIC_URL = "/staticfiles/"
-MEDIA_URL = "/media/"
+STATIC_URL = env("DJANGO_STATIC_URL")
+MEDIA_URL = env("DJANGO_MEDIA_URL")
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field

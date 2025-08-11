@@ -11,7 +11,7 @@ app:
 
   redis:
     enabled: false
-  
+
   postgresql:
     enabled: true
     fullnameOverride: "gaatha-postgresql"
@@ -22,7 +22,7 @@ app:
       password: ""
       database: ""
     primary:
-      persistence: 
+      persistence:
         enabled: "true"
         storageClass: ""
         size: 2Gi
@@ -38,10 +38,10 @@ app:
       limits:
         cpu: "1"
         memory: 1Gi
-        
+
   worker:
     enabled: false
- 
+
   argoHook:
     enabled: true
     resources:
@@ -74,7 +74,7 @@ app:
     FRONTEND_DOMAIN: "{{ required \".app.env.FRONTEND_DOMAIN\" nil }}"
     SESSION_COOKIE_DOMAIN: "{{ required \".app.env.SESSION_COOKIE_DOMAIN\" nil }}"
     CSRF_COOKIE_DOMAIN: "{{ required \".app.env.CSRF_COOKIE_DOMAIN\" nil }}"
-  
+
   secrets:
     DJANGO_SECRET_KEY: "thoh-2i##o2j^6--_sg-oq!j9ohqipx3_a-c2+"
     # Postgres
