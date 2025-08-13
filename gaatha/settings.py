@@ -9,7 +9,6 @@ https://docs.djangoproject.com/en/4.1/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.1/ref/settings/
 """
-import os
 from pathlib import Path
 
 import environ
@@ -35,24 +34,21 @@ env = environ.Env(
     SESSION_COOKIE_DOMAIN=str,  # .example.com
     CSRF_COOKIE_DOMAIN=str,  # .example.com
     ADDITIONAL_TRUSTED_ORIGINS=(list, []),
-
-    # File System
-    DJANGO_STATIC_ROOT=(str, os.path.join(BASE_DIR, "code/static")),
-    DJANGO_MEDIA_ROOT=(str, os.path.join(BASE_DIR, "code/media")),
+    # Static, Media configs
     DJANGO_STATIC_URL=(str, "/static/"),
     DJANGO_MEDIA_URL=(str, "/media/"),
-
-    # AWS S3
-    AWS_S3_BUCKET_ENABLE=(bool, False),
-    AWS_S3_ENDPOINT_URL=str,
+    # File System
+    DJANGO_STATIC_ROOT=(str, BASE_DIR / "assets/static"),
+    DJANGO_MEDIA_ROOT=(str, BASE_DIR / "assets/media"),
+    # Aws-S3
+    AWS_S3_ENABLED=(bool, False),
+    AWS_S3_ENDPOINT_URL=(str, None),
     AWS_S3_ACCESS_KEY_ID=str,
     AWS_S3_SECRET_ACCESS_KEY=str,
-    AWS_S3_REGION=str,
+    AWS_S3_REGION_NAME=str,
     AWS_S3_MEDIA_BUCKET_NAME=str,
     AWS_S3_STATIC_BUCKET_NAME=str,
 )
-
-
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
 
@@ -169,27 +165,32 @@ USE_TZ = True
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
+MEDIA_URL = env("DJANGO_MEDIA_URL")
+STATIC_URL = env("DJANGO_STATIC_URL")
 
-STATICFILES_DIRS = [os.path.join(BASE_DIR, "static")]
-
-if env("AWS_S3_BUCKET_ENABLE"):
-    AWS_S3_ENDPOINT_URL = env("AWS_S3_ENDPOINT_URL")
-    AWS_S3_ACCESS_KEY_ID = env("AWS_S3_ACCESS_KEY_ID")
-    AWS_S3_SECRET_ACCESS_KEY = env("AWS_S3_SECRET_ACCESS_KEY")
-    AWS_S3_REGION_NAME = env("AWS_S3_REGION")
+if env("AWS_S3_ENABLED"):
+    AWS_S3_CONFIG_OPTIONS = {
+        "endpoint_url": env("AWS_S3_ENDPOINT_URL"),
+        "access_key": env("AWS_S3_ACCESS_KEY_ID"),
+        "secret_key": env("AWS_S3_SECRET_ACCESS_KEY"),
+        "region_name": env("AWS_S3_REGION_NAME"),
+    }
 
     STORAGES = {
         "default": {
-            "BACKEND": "storages.backends.s3.S3Storage",
+            "BACKEND": "storages.backends.s3boto3.S3Boto3Storage",
             "OPTIONS": {
+                **AWS_S3_CONFIG_OPTIONS,
                 "bucket_name": env("AWS_S3_MEDIA_BUCKET_NAME"),
+                "querystring_auth": False,
                 "location": "media/",
                 "file_overwrite": False,
             },
         },
         "staticfiles": {
-            "BACKEND": "storages.backends.s3.S3Storage",
+            "BACKEND": "storages.backends.s3boto3.S3Boto3Storage",
             "OPTIONS": {
+                **AWS_S3_CONFIG_OPTIONS,
                 "bucket_name": env("AWS_S3_STATIC_BUCKET_NAME"),
                 "querystring_auth": False,
                 "location": "static/",
@@ -200,11 +201,6 @@ if env("AWS_S3_BUCKET_ENABLE"):
 else:
     STATIC_ROOT = env("DJANGO_STATIC_ROOT")
     MEDIA_ROOT = env("DJANGO_MEDIA_ROOT")
-
-
-# Settings for local storage and local staticfiles
-STATIC_URL = env("DJANGO_STATIC_URL")
-MEDIA_URL = env("DJANGO_MEDIA_URL")
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
