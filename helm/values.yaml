@@ -11,7 +11,7 @@ app:
 
   redis:
     enabled: false
-  
+
   postgresql:
     enabled: true
     fullnameOverride: "gaatha-postgresql"
@@ -22,10 +22,11 @@ app:
       password: ""
       database: ""
     primary:
-      persistence: 
+      persistence:
         enabled: "true"
         storageClass: ""
         size: 2Gi
+
   api:
     enabled: true
     replicaCount: 1
@@ -38,10 +39,40 @@ app:
       limits:
         cpu: "1"
         memory: 1Gi
-        
+
   worker:
     enabled: false
- 
+
+  minio:
+    enabled: false
+    disableWebUI: true
+    mode: standalone
+    fullnameOverride: gaatha-minio
+    global:
+      defaultStorageClass:
+    apiIngress:
+      enabled: true
+      ingressClassName:
+      hostname:
+      annotations:
+        nginx.ingress.kubernetes.io/proxy-body-size: "50m"
+    auth:
+      forceNewKeys: true
+      rootUser: gaatha
+      rootPassword: ""
+    persistence:
+      enabled: true
+      size: 1Gi
+    defaultBuckets: gaatha-static,gaatha-media
+    provisioning:
+      enabled: true
+      resourcesPreset: "nano"
+      cleanupAfterFinished:
+        enabled: true
+      extraCommands:
+        - "mc anonymous set download provisioning/gaatha-static"
+        - "mc anonymous set download provisioning/gaatha-media"
+
   argoHook:
     enabled: true
     resources:
@@ -61,7 +92,9 @@ app:
       collect-static:
         enabled: true
         hook: PostSync
-        command: ["/bin/bash", "-c", "./manage.py collectstatic --noinput"]
+        command: ["/bin/bash", "-c"]
+        args:
+          - "./manage.py wait_for_resources --minio && ./manage.py collectstatic --noinput"
 
   env:
     APP_ENVIRONMENT: "{{ $.Values.environment }}"
@@ -74,7 +107,12 @@ app:
     FRONTEND_DOMAIN: "{{ required \".app.env.FRONTEND_DOMAIN\" nil }}"
     SESSION_COOKIE_DOMAIN: "{{ required \".app.env.SESSION_COOKIE_DOMAIN\" nil }}"
     CSRF_COOKIE_DOMAIN: "{{ required \".app.env.CSRF_COOKIE_DOMAIN\" nil }}"
-  
+    # Aws-minio-s3
+    AWS_S3_ENABLED: "false"
+    AWS_S3_ENDPOINT_URL: "https://{{ $.Values.minio.apiIngress.hostname }}/"
+    AWS_S3_MEDIA_BUCKET_NAME: "gaatha-media"
+    AWS_S3_STATIC_BUCKET_NAME: "gaatha-static"
+
   secrets:
     DJANGO_SECRET_KEY: "thoh-2i##o2j^6--_sg-oq!j9ohqipx3_a-c2+"
     # Postgres
@@ -83,3 +121,8 @@ app:
     DB_PWD: "{{ $.Values.postgresql.auth.postgresPassword }}"
     DB_HOST: "{{ include \"postgresql.v1.primary.fullname\" $.Subcharts.postgresql }}"
     DB_PORT: "{{ include \"postgresql.v1.service.port\" $.Subcharts.postgresql }}"
+    # minio-s3
+    AWS_S3_ACCESS_KEY_ID: "{{ required \".app.minio.auth.rootUser\" $.Values.minio.auth.rootUser }}"
+    AWS_S3_SECRET_ACCESS_KEY: "{{ required \".app.minio.auth.rootPassword\" $.Values.minio.auth.rootPassword }}"
+    AWS_S3_REGION_NAME: "us-east-1"
+
