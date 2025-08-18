@@ -37,6 +37,7 @@ env = environ.Env(
     # Static, Media configs
     DJANGO_STATIC_URL=(str, "/static/"),
     DJANGO_MEDIA_URL=(str, "/media/"),
+    TEMP_FILE_DIR=(str, "/tmp/"),
     # File System
     DJANGO_STATIC_ROOT=(str, BASE_DIR / "assets/static"),
     DJANGO_MEDIA_ROOT=(str, BASE_DIR / "assets/media"),
@@ -167,6 +168,18 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
 MEDIA_URL = env("DJANGO_MEDIA_URL")
 STATIC_URL = env("DJANGO_STATIC_URL")
+
+# Default
+STORAGES = {
+    "default": {
+        "BACKEND": "django.core.files.storage.FileSystemStorage",
+    },
+    "staticfiles": {
+        "BACKEND": "django.contrib.staticfiles.storage.StaticFilesStorage",
+    },
+}
+
+TEMP_FILE_DIR = env("TEMP_FILE_DIR")
 
 if env("AWS_S3_ENABLED"):
     AWS_S3_CONFIG_OPTIONS = {
