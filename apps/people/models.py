@@ -1,15 +1,16 @@
 from django.db import models
 from django.utils.translation import gettext_lazy as _
+from gaatha.utils import SecureFileField, SecureImageField
 
 
 class People(models.Model):
     name = models.CharField(max_length=250, verbose_name=_('Name'))
-    profile_picture = models.ImageField(
+    profile_picture = SecureImageField(
         blank=True,
         upload_to="people/profile-pictures",
         verbose_name=_("Profile Picture")
     )
-    art_work = models.FileField(
+    art_work = SecureFileField(
         blank=True,
         upload_to="people/art-works",
         verbose_name=_("Art Work")

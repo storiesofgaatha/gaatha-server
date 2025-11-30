@@ -1,6 +1,7 @@
 from django.core.exceptions import ValidationError
 from django.utils.translation import gettext_lazy as _
 from django.db import models
+from gaatha.utils import SecureImageField, SecureFileField
 
 
 class WorkCategory(models.Model):
@@ -26,9 +27,9 @@ class Work(models.Model):
         blank=True,
         verbose_name=_('Description')
     )
-    art_work = models.FileField(null=True, blank=True, upload_to="work/art-works")
+    art_work = SecureFileField(null=True, blank=True, upload_to="work/art-works")
     is_cover_image_dark = models.BooleanField(default=False, verbose_name=_('Is Cover Image Dark ?'))
-    cover_image = models.ImageField(
+    cover_image = SecureImageField(
         null=True,
         blank=True,
         upload_to="work/cover-images",
@@ -68,7 +69,7 @@ class WorkImage(models.Model):
         related_name='workimage_work',
         verbose_name=_('Work')
     )
-    image = models.ImageField(
+    image = SecureImageField(
         upload_to="work-image/images/",
         verbose_name=_('Image')
     )
