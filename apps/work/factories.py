@@ -1,7 +1,7 @@
 import factory
+from django.core.files.uploadedfile import SimpleUploadedFile
 from factory import fuzzy
 from factory.django import DjangoModelFactory
-from django.core.files.uploadedfile import SimpleUploadedFile
 
 from .models import (
     Work,
@@ -19,8 +19,8 @@ class WorkCategoryFactory(DjangoModelFactory):
 
 class WorkFactory(DjangoModelFactory):
     category = factory.SubFactory(WorkCategoryFactory)
-    cover_image = SimpleUploadedFile('test.jpg', b'whatevercontentsyouwant')
-    art_work = SimpleUploadedFile('test.jpg', b'whatevercontentsyouwant')
+    cover_image = SimpleUploadedFile("test.jpg", b"whatevercontentsyouwant")
+    art_work = SimpleUploadedFile("test.jpg", b"whatevercontentsyouwant")
     title = fuzzy.FuzzyText(length=15)
     description = fuzzy.FuzzyText(length=50)
     area = fuzzy.FuzzyText(length=50)
@@ -35,7 +35,7 @@ class WorkFactory(DjangoModelFactory):
 
 class WorkImageFactory(DjangoModelFactory):
     work = factory.SubFactory(WorkFactory)
-    image = SimpleUploadedFile('test.jpg', b'whatevercontentsyouwant')
+    image = SimpleUploadedFile("test.jpg", b"whatevercontentsyouwant")
 
     class Meta:
         model = WorkImage

@@ -6,10 +6,10 @@ from .models import People
 @admin.register(People)
 class PeopleAdmin(admin.ModelAdmin):
     list_display = [
-        'name',
-        'designation',
-        'email',
-        'is_current_employee',
-        'is_founder',
-        'order',
+        "name",
+        "designation",
+        "email",
+        "is_current_employee",
+        "is_founder",
+        "order",
     ]

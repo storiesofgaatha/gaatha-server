@@ -1,11 +1,10 @@
 import strawberry
-from typing import Optional
 
-from .models import Work
 from .enums import WorkTypeEnum
+from .models import Work
 
 
 @strawberry.django.filters.filter(Work)
 class WorkFilter:
-    category: Optional[strawberry.ID]
-    work_type: Optional[WorkTypeEnum]
+    category: strawberry.ID | None
+    work_type: WorkTypeEnum | None

@@ -1,23 +1,22 @@
 from __future__ import annotations
-import strawberry
-from strawberry.types import Info
-from typing import Optional
-import cv2
 
+import cv2
+import strawberry
 from django.db import models
+from strawberry.types import Info
 
 
 @strawberry.type
 class FileFieldType:
     name: str
     url: str
-    width: Optional[int]
-    height: Optional[int]
+    width: int | None
+    height: int | None
 
     @staticmethod
     def resolve(file: models.FileField, info: Info) -> FileFieldType | None:
         if not file:
-            return
+            return None
         width = None
         height = None
         image = cv2.imread(file.path)
@@ -26,8 +25,8 @@ class FileFieldType:
         # TODO file width, height calculation is a heavy operation so it should be saved in the database in future.
         return FileFieldType(
             name=file.name,
-            url=info.context['request'].build_absolute_uri(file.url),
-            # TODO file width ,height calculation is a heavy operation so it should be saved in database in furute.
+            url=info.context["request"].build_absolute_uri(file.url),
+            # TODO file width ,height calculation is a heavy operation so it should be saved in database in future.
             width=width,
-            height=height
+            height=height,
         )

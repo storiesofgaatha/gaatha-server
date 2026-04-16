@@ -18,9 +18,9 @@ app:
   postgresql:
     enabled: true
     auth:
-      postgresPassword: "testing-passowrd"
+      postgresPassword: "testing-password"
       username: "test"
-      password: "testing-passowrd"
+      password: "testing-password"
       database: "test"
     primary:
       persistence:

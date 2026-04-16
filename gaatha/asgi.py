@@ -1,5 +1,4 @@
-"""
-ASGI config for gaatha project.
+"""ASGI config for gaatha project.
 
 It exposes the ASGI callable as a module-level variable named ``application``.
 
@@ -11,6 +10,6 @@ import os
 
 from django.core.asgi import get_asgi_application
 
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'gaatha.settings')
+os.environ.setdefault("DJANGO_SETTINGS_MODULE", "gaatha.settings")
 
 application = get_asgi_application()

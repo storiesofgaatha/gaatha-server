@@ -1,14 +1,13 @@
 import strawberry
+import strawberry_django
 from strawberry import auto
 from strawberry.types import Info
-import strawberry_django
-from typing import Optional
 
-from gaatha.utils import get_enum_label
 from gaatha.types import FileFieldType
+from gaatha.utils import get_enum_label
 
-from .filters import WorkFilter
 from .enums import WorkTypeEnum
+from .filters import WorkFilter
 from .models import (
     Work,
     WorkCategory,
@@ -64,7 +63,7 @@ class WorkType:
         return await info.context["work_image_loader"].load(self.id)
 
     @strawberry.field
-    async def work_type_label(self, info: Info) -> Optional[str]:
+    async def work_type_label(self, info: Info) -> str | None:
         return get_enum_label(WorkTypeEnum, self.work_type)
 
 
