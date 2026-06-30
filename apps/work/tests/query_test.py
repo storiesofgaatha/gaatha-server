@@ -38,8 +38,10 @@ class WorkQueryTestCase(TestCase):
                         id=str(work.category.id),
                         name=work.category.name,
                     ),
-                ) for work in works
-            ], resp['data']['works']
+                )
+                for work in works
+            ],
+            resp["data"]["works"],
         )
         self.assertIsNotNone([work.cover_image] for work in works)
         self.assertIsNotNone([work.art_work] for work in works)
@@ -72,8 +74,8 @@ class WorkQueryTestCase(TestCase):
         """
         work = WorkFactory.create()
         WorkImageFactory.create_batch(3, work=work)
-        resp_2 = self.query_check(work_with_images_query, variables={'pk': str(work.pk)})
-        self.assertEqual(len(resp_2['data']['work']['images']), 3)
-        self.assertIsNotNone([image['id']] for image in resp_2['data']['work']['images'])
-        self.assertIsNotNone([image['image']] for image in resp_2['data']['work']['images'])
-        self.assertEqual(resp_2['data']['work']['id'], str(work.id))
+        resp_2 = self.query_check(work_with_images_query, variables={"pk": str(work.pk)})
+        self.assertEqual(len(resp_2["data"]["work"]["images"]), 3)
+        self.assertIsNotNone([image["id"]] for image in resp_2["data"]["work"]["images"])
+        self.assertIsNotNone([image["image"]] for image in resp_2["data"]["work"]["images"])
+        self.assertEqual(resp_2["data"]["work"]["id"], str(work.id))

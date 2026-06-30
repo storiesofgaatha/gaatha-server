@@ -1,7 +1,8 @@
-"""gaatha URL Configuration
+"""gaatha URL Configuration.
 
 The `urlpatterns` list routes URLs to views. For more information please see:
     https://docs.djangoproject.com/en/4.1/topics/http/urls/
+
 Examples:
 Function views
     1. Add an import:  from my_app import views
@@ -12,31 +13,37 @@ Class-based views
 Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
+
 """
-from django.contrib import admin
-from django.urls import path, include
-from django.conf.urls.static import static
+
 from django.conf import settings
-from gaatha.graphql import CustomAsyncGraphQLView
+from django.conf.urls.static import static
+from django.contrib import admin
+from django.urls import include, path
 from django.views.decorators.csrf import csrf_exempt
+
+from gaatha.graphql import CustomAsyncGraphQLView
+
 from .schema import schema
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
+    path("admin/", admin.site.urls),
     path(
         "graphql/",
         csrf_exempt(CustomAsyncGraphQLView.as_view(schema=schema, graphiql=False)),
         name="graphql",
     ),
-    path('tinymce/', include('tinymce.urls')),
+    path("tinymce/", include("tinymce.urls")),
 ]
 
 if settings.DEBUG:
-    urlpatterns.append(path(
-        "graphiql/",
-        csrf_exempt(CustomAsyncGraphQLView.as_view(schema=schema)),
-        name="graphiql",
-    ))
+    urlpatterns.append(
+        path(
+            "graphiql/",
+            csrf_exempt(CustomAsyncGraphQLView.as_view(schema=schema)),
+            name="graphiql",
+        ),
+    )
 
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
     urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

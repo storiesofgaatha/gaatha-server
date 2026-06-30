@@ -7,7 +7,7 @@ sources:
   - https://github.com/stories-of-gaatha/gaatha-server/
 
 dependencies:
-  - name: toggle-django-helm
+  - name: banjo-helm
     alias: app
-    version: 0.2.0
+    version: 0.2.8
     repository: oci://ghcr.io/toggle-corp

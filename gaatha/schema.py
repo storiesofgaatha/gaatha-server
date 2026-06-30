@@ -1,19 +1,16 @@
 import strawberry
 from asgiref.sync import sync_to_async
 
-
-from apps.work.types import WorkType, WorkListType
-from apps.people.types import PeopleListType
-from apps.people.types import (
-    PeopleOrderType
-)
+from apps.people.types import PeopleListType, PeopleOrderType
 from apps.work.models import (
     WorkCategory,
 )
 from apps.work.types import (
     FilterChoiceType,
     WorkCategoryType,
+    WorkListType,
     WorkOrderType,
+    WorkType,
 )
 
 
@@ -23,14 +20,15 @@ def get_work_filter_options() -> FilterChoiceType:
         work_category=[
             WorkCategoryType(
                 id=id,
-                name=name
-            ) for id, name in WorkCategory.objects.values_list('id', 'name')
+                name=name,
+            )
+            for id, name in WorkCategory.objects.values_list("id", "name")
         ],
     )
 
 
 @strawberry.type
-class Query():
+class Query:
     works: list[WorkListType] = strawberry.django.field(order=WorkOrderType)
     work: WorkType = strawberry.django.field()
     people: list[PeopleListType] = strawberry.django.field(order=PeopleOrderType)
